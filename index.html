@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Dynamic QR Code - Create Free QR Code</title>
+    
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* --- Root CSS Variables (for colors) --- */
+        :root {
+            --frame-color: #007bff;
+            --frame-text-color: #FFFFFF;
+            --page-bg-color: #f4f7f6;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInForm {
+             from { opacity: 0; }
+             to { opacity: 1; }
+        }
+
+        /* --- Basic Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--page-bg-color);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            /* FIXED: Added padding-top to prevent fixed nav from overlapping content */
+            padding-top: 70px; 
+        }
+
+        /* ========================================
+        --- Navigation Bar Styles (FIXED) ---
+        ========================================
+        */
+        .navbar {
+            background: #ffffff; /* FIXED: Was var(--card-background) */
+            color: #333; /* FIXED: Was var(--text-color) */
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee; /* FIXED: Was var(--border-color) */
+            position: fixed;
+            top: 0;
+            width: 100%;    
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* FIXED: Was var(--shadow-color) */
+            box-sizing: border-box;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* FIXED: Added constraints to match site layout */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px; 
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--frame-color, #007bff); /* FIXED: Was var(--primary-color) */
+            display: flex;
+            align-items: center;
+            text-decoration: none; /* Added for logo link */
+        }
+
+        .site-logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin: 0; /* Added reset */
+            padding: 0; /* Added reset */
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: #555; /* FIXED: Was var(--text-color) */
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        .nav-item a:hover {
+            background: var(--frame-color, #007bff); /* FIXED: Was var(--primary-color) */
+            color: white;
+        }
+        
+        .theme-toggle-btn {
+            background: none;
+            border: none;
+            color: #555; /* FIXED: Was var(--text-color) */
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        
+        .nav-toggler {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        /* ========================================
+        --- Hero Section Styles ---
+        ========================================
+        */
+        .hero {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border-radius: 12px;
+            padding: 60px 30px;
+            text-align: center;
+            max-width: 1200px;
+            /* FIXED: Removed top margin, body padding now handles it */
+            margin: 0 auto 20px auto; 
+            animation: fadeIn 0.5s ease-out;
+        }
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 15px 0;
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #e0eaff;
+            margin: 0 0 30px 0;
+            line-height: 1.6;
+        }
+        .hero-cta-btn {
+            background-color: #ffffff;
+            color: #007bff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .hero-cta-btn:hover {
+            background-color: #f4f7f6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        /* --- Main Layout (Original) --- */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+            padding: 0 20px 20px 20px;
+        }
+        .controls {
+            flex: 1;
+            min-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .preview {
+            flex: 1;
+            min-width: 350px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            animation: fadeIn 0.5s ease-out;
+            height: fit-content;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        h2 { 
+            font-size: 2.2rem;
+            text-align: left;
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #34495e;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+        }
+        
+        .control-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            padding: 25px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .qr-type-selector { display: flex; flex-wrap: wrap; gap: 10px; }
+        .type-btn {
+            flex-grow: 1; 
+            background-color: #f0f2f5;
+            color: #555;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            min-width: 120px;
+        }
+        .type-btn i { width: 20px; text-align: center; }
+        .type-btn:hover { background-color: #e9ecef; border-color: #ccc; }
+        .type-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        .control-group { margin-bottom: 15px; }
+        .styling-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        input[type="text"], input[type="url"], input[type="email"], input[type="tel"],
+        input[type="password"], input[type="number"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box; 
+            font-size: 1rem;
+            background: #f9f9f9;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.2);
+            background: #fff;
+        }
+        textarea { min-height: 80px; resize: vertical; }
+        
+        .color-input-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .color-input-wrapper { display: flex; align-items: center; gap: 10px; }
+        input[type="color"] {
+            appearance: none;
+            width: 45px;
+            height: 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; padding: 0; }
+        input[type="color"]::-moz-color-swatch { border: none; border-radius: 8px; padding: 0; }
+        input[type="file"] {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+        
+        .form-group { display: none; flex-direction: column; gap: 15px; }
+        .form-group.active { display: flex; animation: fadeInForm 0.4s ease-out; }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+        }
+        #remove-logo { background-color: #6c757d; margin-top: 10px; }
+        #remove-logo:hover { background-color: #5a6268; }
+        #download-btn { background-color: #28a745; margin-right: 10px; }
+        #download-btn:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 10px rgba(33, 136, 56, 0.3);
+        }
+        #download-format {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+        
+        .style-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+        }
+        .style-btn {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            height: 60px;
+        }
+        .style-btn:hover { background: #f1f3f5; border-color: #bbb; }
+        .style-btn.active {
+            border-color: #007bff;
+            background: #e7f1ff;
+            box-shadow: 0 0 10px rgba(0,123,255,0.2);
+        }
+        .style-btn .mini-preview {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .style-btn span { font-size: 0.7rem; font-weight: 600; color: #555; }
+        .style-btn i { font-size: 1.8rem; color: #555; }
+
+
+        /* --- Frame Preview Styles --- */
+        .frame-preview-wrapper {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            margin-top: 20px;
+            width: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+            background-color: var(--frame-color);
+        }
+        .frame-preview-wrapper.active { display: inline-flex; }
+        
+        #qr-code-preview {
+            width: 300px;
+            height: 300px;
+        }
+        .qr-code-placeholder { }
+
+        .frame-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--frame-text-color);
+            text-align: center;
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        .frame-text-content {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        /* --- Specific Frame Styles --- */
+        
+        #frame-preview-none {
+            padding: 0;
+            background-color: transparent;
+        }
+        
+        #frame-preview-simple-bottom {
+            padding: 20px;
+            gap: 10px;
+        }
+
+        #frame-preview-banner-ribbon {
+            padding: 20px;
+            gap: 0;
+            background-color: var(--frame-color);
+            border-radius: 12px;
+        }
+        #frame-preview-banner-ribbon .frame-text {
+            position: relative;
+            background-color: var(--frame-color);
+            padding: 12px 30px;
+            margin-top: 15px;
+            border-radius: 4px;
+            width: 80%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        #frame-preview-banner-ribbon .frame-text::before,
+        #frame-preview-banner-ribbon .frame-text::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+        #frame-preview-banner-ribbon .frame-text::before {
+            left: 0;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--page-bg-color);
+        }
+        #frame-preview-banner-ribbon .frame-text::after {
+            right: 0;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--page-bg-color) transparent transparent;
+        }
+        
+        #frame-preview-watch {
+            padding: 20px;
+            gap: 15px;
+        }
+        #frame-preview-watch .frame-text {
+            gap: 10px;
+            background-color: #c00;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            color: #FFFFFF;
+            font-size: 1rem;
+        }
+        #frame-preview-watch .frame-text .frame-text-content {
+             font-size: 1rem;
+             font-weight: 600;
+        }
+        #frame-preview-watch .frame-text i {
+            font-size: 1.2rem;
+        }
+
+        #frame-preview-scan-arrow {
+            background: transparent;
+            padding: 0;
+            padding-bottom: 20px;
+            gap: 8px;
+        }
+        #frame-preview-scan-arrow .frame-text {
+            background: transparent;
+            color: #333;
+            gap: 10px;
+            font-style: italic;
+        }
+        #frame-preview-scan-arrow .frame-text .frame-text-content {
+            color: #333;
+            font-size: 1.1rem;
+        }
+        #frame-preview-scan-arrow .frame-text i {
+            font-size: 1.5rem;
+            color: #007bff;
+            transform: rotate(-20deg);
+        }
+
+        #frame-preview-envelope {
+            padding: 0;
+            background: #e9ecef;
+            position: relative;
+            border-radius: 8px 8px 0 0;
+            gap: 0;
+            width: 320px;
+        }
+        #frame-preview-envelope .qr-code-placeholder {
+            padding: 10px;
+        }
+        #frame-preview-envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: var(--frame-color);
+            border-radius: 8px 8px 0 0;
+            clip-path: polygon(0 0, 100% 0, 50% 60%);
+            z-index: 5;
+        }
+        #frame-preview-envelope .frame-text {
+            background: var(--frame-color);
+            width: 100%;
+            padding: 20px 0;
+            border-radius: 0 0 12px 12px;
+            margin-top: -10px;
+            z-index: 10;
+            position: relative;
+        }
+        
+        #frame-preview-circle {
+            background: transparent;
+            padding: 0;
+            gap: 15px;
+        }
+        #frame-preview-circle .qr-code-placeholder {
+            border-radius: 50%;
+            overflow: hidden;
+            border: 8px solid var(--frame-color);
+            padding: 15px;
+            background-color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        #frame-preview-circle .frame-text {
+            background: transparent;
+            color: #333;
+        }
+        #frame-preview-circle .frame-text .frame-text-content {
+            color: #333;
+        }
+
+
+        /* --- Multi-URL Form Styles --- */
+		.multi-url-entry { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+		.multi-url-entry input.multi-url-title { flex: 1; }
+		.multi-url-entry input.multi-url-link { flex: 2; }
+		.delete-url-btn {
+			background-color: #dc3545; color: white; border: none; border-radius: 8px;
+			width: 45px; height: 45px; padding: 0; font-size: 1.2rem;
+			font-weight: bold; cursor: pointer; flex-shrink: 0; transition: background-color 0.2s ease;
+		}
+		.delete-url-btn:hover { background-color: #c82333; }
+		#add-more-url-btn { background-color: #6c757d; padding: 10px 15px; font-size: 0.9rem; }
+		#add-more-url-btn:hover { background-color: #5a6268; }
+		#add-more-url-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+		.multi-url-controls { display: flex; align-items: center; gap: 15px; margin-top: 15px; }
+		#multi-url-limit-msg { color: #dc3545; font-weight: 600; display: none; }
+        
+        /* --- Features Layout Section Styles --- */
+        .features-layout {
+            padding: 40px 20px;
+            background-color: #ffffff;
+            margin: 20px auto;
+            max-width: 1200px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+        }
+        .features-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .feature-card {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--frame-color, #007bff);
+            margin-bottom: 15px;
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            color: #333;
+            border: none;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; }
+            .styling-grid { grid-template-columns: 1fr; }
+
+            /* FIXED: Mobile Nav Styles */
+            .nav-toggler {
+                display: block;
+            }
+            .nav-menu {
+                display: none; /* Hide by default */
+                flex-direction: column;
+                position: absolute;
+                top: 100%; /* Position below the navbar */
+                left: 0;
+                width: 100%;
+                background: #ffffff;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                border-top: 1px solid #eee;
+                padding: 10px 0;
+                gap: 5px; /* Adjust gap for vertical items */
+            }
+            .nav-menu.active {
+                display: flex; /* Show when active */
+            }
+            .nav-item {
+                width: 100%;
+            }
+            .nav-item a {
+                display: block; /* Make links full-width */
+                text-align: center;
+                padding: 12px 20px;
+            }
+            .nav-item .theme-toggle-btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 1.3rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+     
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="#" class="nav-brand">
+            <img src="images/" alt="Make Dynamic QR Code Logo" class="site-logo">
+        </a>
+        
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-item"><a href="#">Home</a></li>
+          <li class="nav-item"><a href="#QR-code-type">Create</a></li>
+          <li class="nav-item"><a href="#">About</a></li>
+        </ul>
+
+        <div class="nav-toggler" id="navToggler">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Create Your Dynamic QR Code</h1>
+            <p class="hero-subtitle">Dynamic, stylish, and completely free. Generate QR codes for URLs, WiFi, vCards, and more.</p>
+            <a href="#QR-code-type" class="hero-cta-btn">Start Creating Now</a>
+        </div>
+    </header>
+
+
+    <div class="container" id="QR-code-type">
+        <div class="controls">
+            <h2 style="text-align: left;">Make Dynamic QR Code</h2>
+
+            <div class="control-card">
+                <h3>QR Code Type</h3>
+                <div class="qr-type-selector">
+                    <button class="type-btn active" data-type="url"><i class="fa-solid fa-globe"></i> URL</button>
+                    <button class="type-btn" data-type="text"><i class="fa-solid fa-file-lines"></i> Text</button>
+                    <button class="type-btn" data-type="email"><i class="fa-solid fa-envelope"></i> Email</button>
+                    <button class="type-btn" data-type="phone"><i class="fa-solid fa-phone"></i> Phone</button>
+                    <button class="type-btn" data-type="sms"><i class="fa-solid fa-comment-sms"></i> SMS</button>
+                    <button class="type-btn" data-type="wifi"><i class="fa-solid fa-wifi"></i> WiFi</button>
+                    <button class="type-btn" data-type="contact"><i class="fa-solid fa-address-card"></i> Contact</button>
+					<button class="type-btn" data-type="multi-url"><i class="fa-solid fa-list-ol"></i> Multi-URL</button>
+                </div>
+            </div>
+
+            <div class="control-card" id="forms-container"> <div id="forms-container-inner"> <div id="form-url" class="form-group active">
+                        <h3>Enter Any URL</h3>
+                        <label for="input-url">Your URL (e.g., https://futuretopindia.in)</label>
+                        <input type="url" id="input-url" placeholder="https://example.com" value="https://example.com">
+                    </div>
+                    <div id="form-text" class="form-group">
+                        <h3>Your Text</h3>
+                        <label for="input-text">Enter any text</label>
+                        <textarea id="input-text" placeholder="Hello World!"></textarea>
+                    </div>
+                    <div id="form-email" class="form-group">
+                        <h3>Email</h3>
+                        <label for="input-email">Email Address</label>
+                        <input type="email" id="input-email" placeholder="email@example.com">
+                        <label for="input-email-subject">Subject</label>
+                        <input type="text" id="input-email-subject" placeholder="Email Subject">
+                        <label for="input-email-body">Message</label>
+                        <textarea id="input-email-body" placeholder="Email Message"></textarea>
+                    </div>
+                    <div id="form-phone" class="form-group">
+                        <h3>Phone Number</h3>
+                        <label for="input-phone">Phone Number (with country code)</label>
+                        <input type="tel" id="input-phone" placeholder="+911234567890">
+                    </div>
+                    <div id="form-sms" class="form-group">
+                        <h3>SMS</h3>
+                        <label for="input-sms-phone">Phone Number (with country code)</label>
+                        <input type="tel" id="input-sms-phone" placeholder="+911234567890">
+                        <label for="input-sms-message">Message</label>
+                        <textarea id="input-sms-message" placeholder="Your SMS message"></textarea>
+                    </div>
+                    <div id="form-wifi" class="form-group">
+                        <h3>WiFi Network</h3>
+                        <label for="input-wifi-ssid">Network Name (SSID)</label>
+                        <input type="text" id="input-wifi-ssid" placeholder="MyWiFiNetwork">
+                        <label for="input-wifi-pass">Password</label>
+                        <input type="password" id="input-wifi-pass" placeholder="NetworkPassword">
+                        <label for="input-wifi-encryption">Encryption</label>
+                        <select id="input-wifi-encryption">
+                            <option value="WPA">WPA/WPA2</option>
+                            <option value="WEP">WEP</option>
+                            <option value="nopass">No Password</option>
+                        </select>
+                    </div>
+                    <div id="form-contact" class="form-group">
+                        <h3>Contact (vCard)</h3>
+                        <label for="input-contact-name">Full Name</label>
+                        <input type="text" id="input-contact-name" placeholder="John Doe">
+                        <label for="input-contact-phone">Phone</label>
+                        <input type="tel" id="input-contact-phone" placeholder="+911234567890">
+                        <label for="input-contact-email">Email</label>
+                        <input type="email" id="input-contact-email" placeholder="john@example.com">
+                        <label for="input-contact-org">Organization</label>
+                        <input type="text" id="input-contact-org" placeholder="Google">
+                    </div>
+					<div id="form-multi-url" class="form-group">
+						<h3>Multi-URL (Maximum 10 Links)</h3>
+						<div id="multi-url-list">
+							<div class="multi-url-entry">
+								<input type="text" class="multi-url-title" placeholder="Title">
+								<input type="url" class="multi-url-link" placeholder="https://url.com">
+								</div>
+						</div>
+						<div class="multi-url-controls">
+							<button type="button" id="add-more-url-btn">+ Add More</button>
+							<span id="multi-url-limit-msg">Maximum 10 links limit.</span>
+						</div>
+					</div>
+                </div>
+            </div>
+            <div class="control-card">
+                <h3>Shape & Color</h3>
+                
+                <div class="control-group">
+                    <label>Dot Style</label>
+                    <div class="style-selector-grid" id="dots-style-selector">
+                        <button class="style-btn active" data-style="rounded">
+                            <div class="mini-preview" id="mini-dots-rounded"></div>
+                        </button>
+                        <button class="style-btn" data-style="extra-rounded">
+                            <div class="mini-preview" id="mini-dots-extra-rounded"></div>
+                        </button>
+                        <button class="style-btn" data-style="dots">
+                            <div class="mini-preview" id="mini-dots-dots"></div>
+                        </button>
+                        <button class="style-btn" data-style="classy">
+                            <div class="mini-preview" id="mini-dots-classy"></div>
+                        </button>
+                        <button class="style-btn" data-style="classy-rounded">
+                            <div class="mini-preview" id="mini-dots-classy-rounded"></div>
+                        </button>
+                        <button class="style-btn" data-style="square">
+                            <div class="mini-preview" id="mini-dots-square"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="styling-grid">
+                    <div class="control-group">
+                        <label for="input-corners-style">Corner Square Style</label>
+                        <select id="input-corners-style">
+						    <option value="extra-rounded">Extra Rounded</option>
+                            <option value="square">Square</option>
+                            <option value="dot">Dot</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="input-corners-dot-style">Corner Dot Style</label>
+                        <select id="input-corners-dot-style">
+						    <option value="dot">Dot</option>
+                            <option value="square">Square</option>                            
+                        </select>
+                    </div>
+                </div>
+                
+                <hr style="border:none; border-top: 1px solid #eee; margin: 20px 0;">
+                
+                <div class="control-group">
+                    <label for="input-size">Size (px)</label>
+                    <input type="number" id="input-size" value="300" min="100" max="1000">
+                </div>
+                
+                <div class="color-input-container">
+                    <div class="control-group">
+                        <label>Foreground Color</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="input-fg-color" value="#000000">
+                            <span>(Dots)</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Background Color</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="input-bg-color" value="#FFFFFF">
+                            <span>(Background)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border:none; border-top: 1px solid #eee; margin: 20px 0;">
+
+                <div class="control-group">
+                    <label for="input-logo">Add Logo (optional)</label>
+                    <input type="file" id="input-logo" accept="image/*">
+                </div>
+                <button id="remove-logo">Remove Logo</button>
+            </div>
+            <div class="control-card">
+                <h3>Frame</h3>
+                
+                <div class="control-group">
+                    <label>Frame Style</label>
+                    <div class="style-selector-grid" id="frame-style-selector">
+                        <button class="style-btn active" data-frame="none">
+                            <i class="fa-solid fa-ban"></i>
+                            <span>None</span>
+                        </button>
+                        <button class="style-btn" data-frame="circle">
+                            <i class="fa-solid fa-circle-notch"></i>
+                            <span>Circle</span>
+                        </button>
+                        <button class="style-btn" data-frame="simple-bottom">
+                            <i class="fa-solid fa-align-center"></i>
+                            <span>Text Below</span>
+                        </button>
+                         <button class="style-btn" data-frame="banner-ribbon">
+                            <i class="fa-solid fa-ribbon"></i>
+                            <span>Ribbon</span>
+                        </button>
+                        <button class="style-btn" data-frame="watch">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <span>Watch</span>
+                        </button>
+                        <button class="style-btn" data-frame="scan-arrow">
+                            <i class="fa-solid fa-arrow-pointer"></i>
+                            <span>Scan</span>
+                        </button>
+                         <button class="style-btn" data-frame="envelope">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                            <span>Envelope</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-frame-text">Frame Text (e.g., SCAN ME)</label>
+                    <input type="text" id="input-frame-text" placeholder="SCAN ME" value="SCAN ME">
+                </div>
+                <div class="color-input-container">
+                    <div class="control-group">
+                        <label>Frame Color</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="input-frame-color" value="#2C7896">
+                            <span>(Frame BG)</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Frame Text Color</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="input-frame-text-color" value="#FFFFFF">
+                            <span>(Text)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="control-card">
+                <h3>Download</h3>
+                <button id="download-btn">Download QR Code</button>
+                <select id="download-format" style="margin-top: 10px;">
+                    <option value="png">PNG</option>
+                    <option value="jpeg">JPEG</option>
+                    <option value="webp">WEBP</option>
+                    <option value="svg">SVG (No Frame)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="preview">
+            <h3>Live Preview Your QR Code</h3>
+            
+            <div id="frame-preview-none" class="frame-preview-wrapper active">
+                <div id="qr-code-preview"></div>
+            </div>
+            <div id="frame-preview-simple-bottom" class="frame-preview-wrapper">
+                <div class="qr-code-placeholder"></div>
+                <span class="frame-text">
+                    <span class="frame-text-content">SCAN ME</span>
+                </span>
+            </div>
+            <div id="frame-preview-banner-ribbon" class="frame-preview-wrapper">
+                <div class="qr-code-placeholder"></div>
+                <span class="frame-text">
+                    <span class="frame-text-content">SCAN ME</span>
+                </span>
+            </div>
+            <div id="frame-preview-watch" class="frame-preview-wrapper">
+                <div class="qr-code-placeholder"></div>
+                <span class="frame-text">
+                    <i class="fa-solid fa-circle-play"></i>
+                    <span class="frame-text-content">SCAN ME</span>
+                </span>
+            </div>
+            <div id="frame-preview-scan-arrow" class="frame-preview-wrapper">
+                <div class="qr-code-placeholder"></div>
+                <span class="frame-text">
+                    <span class="frame-text-content">SCAN ME</span>
+                    <i class="fa-solid fa-arrow-turn-down"></i>
+                </span>
+            </div>
+            <div id="frame-preview-envelope" class="frame-preview-wrapper">
+                <div class="qr-code-placeholder"></div>
+                <span class="frame-text">
+                    <span class="frame-text-content">SCAN ME</span>
+                </span>
+            </div>
+            <div id="frame-preview-circle" class="frame-preview-wrapper">
+                <div class="qr-code-placeholder"></div>
+                <span class="frame-text">
+                    <span class="frame-text-content">SCAN ME</span>
+                </span>
+            </div>
+            
+        </div>
+        </div>
+    <section class="features-layout">
+        <div class="features-container">
+            <h2 class="section-title">Why Choose Our QR Generator?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fa-solid fa-palette"></i>
+                    <h3>Fully Customizable</h3>
+                    <p>Control everything from colors and shapes to adding your own logo and stylish frames.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h3>Instant Preview</h3>
+                    <p>See your QR code change in real-time as you design it. No waiting, no refreshing.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-mobile-alt"></i>
+                    <h3>Multiple Data Types</h3>
+                    <p>Create codes for websites, WiFi, contact cards (vCard), SMS, email, and even multiple URLs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            const root = document.documentElement;
+		    const navToggler = document.getElementById('navToggler');
+            const navMenu = document.getElementById('navMenu');
+			
+			
+			 // ====== MOBILE NAVIGATION TOGGLE (FIXED) ======
+            navToggler.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                
+                const togglerIcon = navToggler.querySelector("i");
+                if (navMenu.classList.contains('active')) {
+                    togglerIcon.classList.remove('fa-bars');
+                    togglerIcon.classList.add('fa-xmark'); // FIXED: Was fa-times
+                } else {
+                    togglerIcon.classList.remove('fa-xmark'); // FIXED: Was fa-times
+                    togglerIcon.classList.add('fa-bars');
+                }
+            });
+
+    
+
+            // --- 1. Initialize QR Code Library (MODIFIED) ---
+            const qrCode = new QRCodeStyling({
+                width: 300,
+                height: 300,
+                type: "svg",
+                data: "https://example.com",
+                image: "",
+                dotsOptions: { color: "#000000", type: "rounded" }, // Matches active button "rounded"
+                // FIXED: Initial state now matches the HTML's default selected <option>
+                cornersSquareOptions: { type: "extra-rounded" }, 
+                cornersDotOptions: { type: "dot" },
+                backgroundOptions: { color: "#FFFFFF" },
+                imageOptions: { crossOrigin: "anonymous", margin: 5 }
+            });
+
+            const previewElement = document.getElementById("qr-code-preview");
+            qrCode.append(previewElement);
+
+            
+            // --- 2. Select All Input Elements (No changes) ---
+            const formsContainer = document.getElementById("forms-container-inner"); // Updated selector
+            const typeButtons = document.querySelectorAll(".type-btn"); 
+            const inputUrl = document.getElementById("input-url");
+            const inputText = document.getElementById("input-text");
+            const inputEmail = document.getElementById("input-email");
+            const inputEmailSubject = document.getElementById("input-email-subject");
+            const inputEmailBody = document.getElementById("input-email-body");
+            const inputPhone = document.getElementById("input-phone");
+            const inputSmsPhone = document.getElementById("input-sms-phone");
+            const inputSmsMessage = document.getElementById("input-sms-message");
+            const inputWifiSsid = document.getElementById("input-wifi-ssid");
+            const inputWifiPass = document.getElementById("input-wifi-pass");
+            const inputWifiEncryption = document.getElementById("input-wifi-encryption");
+            const inputContactName = document.getElementById("input-contact-name");
+            const inputContactPhone = document.getElementById("input-contact-phone");
+            const inputContactEmail = document.getElementById("input-contact-email");
+            const inputContactOrg = document.getElementById("input-contact-org");
+            const multiUrlListContainer = document.getElementById("multi-url-list");
+            const addMoreUrlBtn = document.getElementById("add-more-url-btn");
+            const multiUrlLimitMsg = document.getElementById("multi-url-limit-msg");
+            const MAX_URLS = 10; 
+            const inputSize = document.getElementById("input-size");
+            const inputFgColor = document.getElementById("input-fg-color");
+            const inputBgColor = document.getElementById("input-bg-color");
+            const inputLogo = document.getElementById("input-logo");
+            const removeLogoBtn = document.getElementById("remove-logo");
+            const dotsStyleSelector = document.getElementById("dots-style-selector");
+            const inputCornersStyle = document.getElementById("input-corners-style");
+            const inputCornersDotStyle = document.getElementById("input-corners-dot-style");
+            const frameStyleSelector = document.getElementById("frame-style-selector");
+            const inputFrameText = document.getElementById("input-frame-text");
+            const inputFrameColor = document.getElementById("input-frame-color");
+            const inputFrameTextColor = document.getElementById("input-frame-text-color");
+            const downloadBtn = document.getElementById("download-btn");
+            const downloadFormat = document.getElementById("download-format");
+
+            
+            // --- 3. Main Function to Update QR Code (No changes) ---
+            const updateQrCodeData = () => {
+                let newData = "";
+                const activeBtn = document.querySelector(".type-btn.active");
+                const selectedType = activeBtn ? activeBtn.dataset.type : 'url';
+                switch (selectedType) {
+                    case "url": newData = inputUrl.value; break;
+                    case "text": newData = inputText.value; break;
+                    case "email": newData = `mailto:${inputEmail.value}?subject=${encodeURIComponent(inputEmailSubject.value)}&body=${encodeURIComponent(inputEmailBody.value)}`; break;
+                    case "phone": newData = `tel:${inputPhone.value}`; break;
+                    case "sms": newData = `smsto:${inputSmsPhone.value}:${encodeURIComponent(inputSmsMessage.value)}`; break;
+                    case "wifi": newData = `WIFI:T:${inputWifiEncryption.value};S:${inputWifiSsid.value};P:${inputWifiPass.value};;`; break;
+                    case "contact": newData = `BEGIN:VCARD\nVERSION:3.0\nFN:${inputContactName.value}\nORG:${inputContactOrg.value}\nTEL;TYPE=CELL:${inputContactPhone.value}\nEMAIL:${inputContactEmail.value}\nEND:VCARD`; break;
+                    case "multi-url":
+                        const entries = multiUrlListContainer.querySelectorAll(".multi-url-entry");
+                        let links = [];
+                        entries.forEach(entry => {
+                            const title = entry.querySelector(".multi-url-title").value.trim();
+                            const url = entry.querySelector(".multi-url-link").value.trim();
+                            if (title && url) links.push(`${title}: ${url}`);
+                        });
+                        newData = links.join('\n'); 
+                        break;
+                }
+                qrCode.update({ data: newData || " " });
+            };
+
+            
+            // --- 4. Event Listeners ---
+
+            // QR Type Button Click Logic (No changes)
+            typeButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    typeButtons.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    const selectedType = btn.dataset.type;
+                    formsContainer.querySelectorAll(".form-group").forEach(form => {
+                        form.classList.remove("active");
+                    });
+                    document.getElementById(`form-${selectedType}`).classList.add("active");
+                    updateQrCodeData();
+                });
+            });
+
+            // Standard Data Inputs (No changes)
+            const allDataInputs = [
+                inputUrl, inputText, inputEmail, inputEmailSubject, inputEmailBody,
+                inputPhone, inputSmsPhone, inputSmsMessage, inputWifiSsid, inputWifiPass,
+                inputWifiEncryption, inputContactName, inputContactPhone, inputContactEmail, inputContactOrg
+            ];
+            allDataInputs.forEach(input => input.addEventListener("input", updateQrCodeData));
+
+            // Multi-URL Listeners (No changes)
+            addMoreUrlBtn.addEventListener("click", () => {
+                if (multiUrlListContainer.querySelectorAll(".multi-url-entry").length < MAX_URLS) {
+                    const newEntry = document.createElement("div");
+                    newEntry.className = "multi-url-entry";
+                    newEntry.innerHTML = `<input type="text" class="multi-url-title" placeholder="Title"><input type="url" class="multi-url-link" placeholder="https://url.com"><button type="button" class="delete-url-btn">×</button>`;
+                    multiUrlListContainer.appendChild(newEntry);
+                }
+                if (multiUrlListContainer.querySelectorAll(".multi-url-entry").length >= MAX_URLS) {
+                    addMoreUrlBtn.disabled = true;
+                    multiUrlLimitMsg.style.display = "inline";
+                }
+            });
+            multiUrlListContainer.addEventListener("click", (event) => {
+                if (event.target.classList.contains("delete-url-btn")) {
+                    event.target.closest(".multi-url-entry").remove();
+                    addMoreUrlBtn.disabled = false;
+                    multiUrlLimitMsg.style.display = "none";
+                    updateQrCodeData();
+                }
+            });
+            multiUrlListContainer.addEventListener("input", updateQrCodeData);
+
+            // Styling Event Listeners (No changes)
+            inputSize.addEventListener("input", () => {
+                const size = parseInt(inputSize.value, 10);
+                if (size > 0) {
+                    previewElement.style.width = `${size}px`; 
+                    previewElement.style.height = `${size}px`;
+                    const envelope = document.getElementById("frame-preview-envelope");
+                    if (envelope.classList.contains("active")) {
+                         envelope.style.width = `${size + 20}px`;
+                    }
+                    qrCode.update({ width: size, height: size });
+                }
+            });
+            inputFgColor.addEventListener("input", () => {
+                qrCode.update({ dotsOptions: { color: inputFgColor.value } });
+            });
+            inputBgColor.addEventListener("input", () => {
+                qrCode.update({ backgroundOptions: { color: inputBgColor.value } });
+            });
+            inputLogo.addEventListener("change", (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = () => { qrCode.update({ image: reader.result }); };
+                    reader.readAsDataURL(file);
+                }
+            });
+            removeLogoBtn.addEventListener("click", () => {
+                qrCode.update({ image: "" });
+                inputLogo.value = "";
+            });
+
+            // Visual Dot Style Click (No changes)
+            dotsStyleSelector.addEventListener("click", (e) => {
+                const btn = e.target.closest(".style-btn");
+                if (!btn) return;
+                dotsStyleSelector.querySelectorAll(".style-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                const newStyle = btn.dataset.style;
+                qrCode.update({
+                    dotsOptions: { color: inputFgColor.value, type: newStyle }
+                });
+            });
+
+            // Corner Style Listeners (No changes)
+            inputCornersStyle.addEventListener("input", () => {
+                qrCode.update({ cornersSquareOptions: { type: inputCornersStyle.value } });
+            });
+            inputCornersDotStyle.addEventListener("input", () => {
+                qrCode.update({ cornersDotOptions: { type: inputCornersDotStyle.value } });
+            });
+
+            // Visual Frame Style Listeners (No changes)
+            frameStyleSelector.addEventListener("click", (e) => {
+                const btn = e.target.closest(".style-btn");
+                if (!btn) return;
+                const newFrame = btn.dataset.frame;
+
+                frameStyleSelector.querySelectorAll(".style-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                document.querySelectorAll(".frame-preview-wrapper").forEach(w => w.classList.remove("active"));
+                const activeFrameWrapper = document.getElementById(`frame-preview-${newFrame}`);
+                activeFrameWrapper.classList.add("active");
+                
+                if (newFrame !== 'none') {
+                    const placeholder = activeFrameWrapper.querySelector(".qr-code-placeholder");
+                    if(placeholder) {
+                        placeholder.appendChild(previewElement);
+                    }
+                    if (newFrame === 'envelope') {
+                        const size = parseInt(inputSize.value, 10);
+                        activeFrameWrapper.style.width = `${size + 20}px`;
+                    } else {
+                         document.getElementById("frame-preview-envelope").style.width = '320px';
+                    }
+                } else {
+                     activeFrameWrapper.appendChild(previewElement);
+                }
+            });
+            
+            // Frame Text Listener (MODIFIED - cleaned up redundant code)
+            inputFrameText.addEventListener("input", () => {
+                const text = inputFrameText.value;
+                // Update only the *content* span inside all frame-text spans
+                document.querySelectorAll(".frame-text-content").forEach(span => {
+                    span.textContent = text;
+                });
+                // Hide text element if input is empty
+                document.querySelectorAll(".frame-text").forEach(span => {
+                     span.style.display = text ? "inline-flex" : "none";
+                });
+                // The 'scan-arrow' frame is already handled by the rule above.
+            });
+
+            // Frame Color Listener (No changes)
+            inputFrameColor.addEventListener("input", () => {
+                const color = inputFrameColor.value;
+                root.style.setProperty('--frame-color', color);
+                document.querySelector("#frame-preview-watch .frame-text").style.backgroundColor = color;
+            });
+            
+            // Frame Text Color Listener (No changes)
+            inputFrameTextColor.addEventListener("input", () => {
+                const color = inputFrameTextColor.value;
+                root.style.setProperty('--frame-text-color', color);
+                document.querySelector("#frame-preview-watch .frame-text").style.color = color;
+            });
+
+            // --- 5. Download Function (No changes) ---
+            downloadBtn.addEventListener("click", () => {
+                const format = downloadFormat.value;
+                
+                if (format === 'svg') {
+                    qrCode.download({ name: "qr-code", extension: "svg" });
+                    return; 
+                }
+                
+                const activeFrame = document.querySelector(".frame-preview-wrapper.active");
+                
+                html2canvas(activeFrame, {
+                    backgroundColor: null,
+                    scale: 2 
+                }).then(canvas => {
+                    const dataUrl = canvas.toDataURL(`image/${format}`, 1.0);
+                    const link = document.createElement('a');
+                    link.download = `qr-code-with-frame.${format}`;
+                    link.href = dataUrl;
+                    link.click();
+                });
+            });
+
+
+            // --- 6. Initial Setup Function (No changes) ---
+            function generateMiniPreviews() {
+                const buttons = dotsStyleSelector.querySelectorAll(".style-btn");
+                buttons.forEach(btn => {
+                    const style = btn.dataset.style;
+                    const target = btn.querySelector(".mini-preview");
+                    
+                    const miniQR = new QRCodeStyling({
+                        width: 40,
+                        height: 40,
+                        data: "S", margin: 0,
+                        dotsOptions: { type: style, color: "#333" },
+                        cornersSquareOptions: { type: "square" },
+                        cornersDotOptions: { type: "square" },
+                        backgroundOptions: { color: "transparent" }
+                    });
+                    miniQR.append(target);
+                });
+            }
+
+            // --- Run on page load ---
+            generateMiniPreviews();
+            updateQrCodeData();
+            root.style.setProperty('--frame-color', inputFrameColor.value);
+            root.style.setProperty('--frame-text-color', inputFrameTextColor.value);
+        });
+    </script>
+</body>
+</html>
