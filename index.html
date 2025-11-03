@@ -28,6 +28,31 @@
              from { opacity: 0; }
              to { opacity: 1; }
         }
+        
+        /* --- Hero & Scroll Animations --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes animateGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- NEW: Floating Preview Animation --- */
+        @keyframes fadeInRight {
+            from { right: -200px; opacity: 0; }
+            to { right: 20px; opacity: 1; }
+        }
+
 
         /* --- Basic Styles --- */
         body {
@@ -36,7 +61,6 @@
             margin: 0;
             padding: 0;
             color: #333;
-            /* FIXED: Added padding-top to prevent fixed nav from overlapping content */
             padding-top: 70px; 
         }
 
@@ -45,15 +69,15 @@
         ========================================
         */
         .navbar {
-            background: #ffffff; /* FIXED: Was var(--card-background) */
-            color: #333; /* FIXED: Was var(--text-color) */
+            background: #ffffff; 
+            color: #333; 
             padding: 1rem 0;
-            border-bottom: 1px solid #eee; /* FIXED: Was var(--border-color) */
+            border-bottom: 1px solid #eee; 
             position: fixed;
             top: 0;
             width: 100%;    
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* FIXED: Was var(--shadow-color) */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
             box-sizing: border-box;
         }
 
@@ -61,7 +85,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /* FIXED: Added constraints to match site layout */
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px; 
@@ -72,10 +95,10 @@
         .nav-brand {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--frame-color, #007bff); /* FIXED: Was var(--primary-color) */
+            color: var(--frame-color, #007bff); 
             display: flex;
             align-items: center;
-            text-decoration: none; /* Added for logo link */
+            text-decoration: none; 
         }
 
         .site-logo {
@@ -88,13 +111,13 @@
             display: flex;
             align-items: center;
             gap: 25px;
-            margin: 0; /* Added reset */
-            padding: 0; /* Added reset */
+            margin: 0; 
+            padding: 0; 
         }
         
         .nav-item a {
             text-decoration: none;
-            color: #555; /* FIXED: Was var(--text-color) */
+            color: #555; 
             font-weight: 600;
             padding: 5px 10px;
             border-radius: 6px;
@@ -102,14 +125,14 @@
         }
         
         .nav-item a:hover {
-            background: var(--frame-color, #007bff); /* FIXED: Was var(--primary-color) */
+            background: var(--frame-color, #007bff); 
             color: white;
         }
         
         .theme-toggle-btn {
             background: none;
             border: none;
-            color: #555; /* FIXED: Was var(--text-color) */
+            color: #555; 
             cursor: pointer;
             font-size: 1.5rem;
         }
@@ -122,7 +145,7 @@
         }
         
         /* ========================================
-        --- Hero Section Styles ---
+        --- Hero Section Styles (MODIFIED) ---
         ========================================
         */
         .hero {
@@ -131,9 +154,11 @@
             padding: 60px 30px;
             text-align: center;
             max-width: 1200px;
-            /* FIXED: Removed top margin, body padding now handles it */
             margin: 0 auto 20px auto; 
-            animation: fadeIn 0.5s ease-out;
+            
+            background-size: 200% 200%;
+            animation: animateGradient 10s ease infinite;
+            overflow: hidden; 
         }
         .hero-content {
             max-width: 700px;
@@ -144,12 +169,16 @@
             font-weight: 800;
             color: #ffffff;
             margin: 0 0 15px 0;
+            animation: fadeInUp 0.6s ease-out 0.2s;
+            animation-fill-mode: backwards; 
         }
         .hero-subtitle {
             font-size: 1.2rem;
             color: #e0eaff;
             margin: 0 0 30px 0;
             line-height: 1.6;
+            animation: fadeInUp 0.6s ease-out 0.4s;
+            animation-fill-mode: backwards;
         }
         .hero-cta-btn {
             background-color: #ffffff;
@@ -164,6 +193,8 @@
             transition: all 0.2s ease;
             display: inline-block;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.6s ease-out 0.6s;
+            animation-fill-mode: backwards;
         }
         .hero-cta-btn:hover {
             background-color: #f4f7f6;
@@ -198,8 +229,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            animation: fadeIn 0.5s ease-out;
             height: fit-content;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .preview:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
         h1 {
@@ -228,7 +263,11 @@
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
             padding: 25px;
-            animation: fadeIn 0.5s ease-out;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .control-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .qr-type-selector { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -326,7 +365,6 @@
         }
         #remove-logo { background-color: #6c757d; margin-top: 10px; }
         #remove-logo:hover { background-color: #5a6268; }
-        /* MODIFIED: Removed margin-right */
         #download-btn { background-color: #28a745; }
         #download-btn:hover {
             background-color: #218838;
@@ -628,19 +666,18 @@
             line-height: 1.6;
         }
 
-        /* --- NEW: Download Card (in preview pane) --- */
+        /* --- Download Card (in preview pane) --- */
         .download-card {
             width: 100%;
             box-sizing: border-box;
-            margin-top: 20px; /* Space from QR code */
-            animation: fadeIn 0.5s ease-out; /* Add fade-in */
+            margin-top: 20px; 
         }
         .download-card h3 {
              text-align: center;
         }
         .download-card #download-btn {
             width: 100%;
-            margin-bottom: 10px; /* Space */
+            margin-bottom: 10px; 
         }
         .download-card #download-format {
             width: 100%;
@@ -652,31 +689,30 @@
             .container { flex-direction: column; }
             .styling-grid { grid-template-columns: 1fr; }
 
-            /* FIXED: Mobile Nav Styles */
             .nav-toggler {
                 display: block;
             }
             .nav-menu {
-                display: none; /* Hide by default */
+                display: none; 
                 flex-direction: column;
                 position: absolute;
-                top: 100%; /* Position below the navbar */
+                top: 100%; 
                 left: 0;
                 width: 100%;
                 background: #ffffff;
                 box-shadow: 0 10px 15px rgba(0,0,0,0.1);
                 border-top: 1px solid #eee;
                 padding: 10px 0;
-                gap: 5px; /* Adjust gap for vertical items */
+                gap: 5px; 
             }
             .nav-menu.active {
-                display: flex; /* Show when active */
+                display: flex; 
             }
             .nav-item {
                 width: 100%;
             }
             .nav-item a {
-                display: block; /* Make links full-width */
+                display: block; 
                 text-align: center;
                 padding: 12px 20px;
             }
@@ -684,6 +720,11 @@
                 width: 100%;
                 padding: 12px 20px;
                 font-size: 1.3rem;
+            }
+
+             /* --- NEW: Hide floating preview on small screens --- */
+            .floating-mobile-preview {
+                display: none;
             }
         }
 		</style>
@@ -696,28 +737,27 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
         }
         
-        /* --- MODIFIED: WhatsApp Button Styles --- */
+        /* --- WhatsApp Button Styles --- */
         .floating-button {
             position: fixed;
             bottom: 30px;
             right: 30px;
             z-index: 50;
             animation: pulse 2s infinite;
-            background-color: #25D366; /* WhatsApp Green */
+            background-color: #25D366; 
             color: white;
-            width: 56px; /* Set fixed size */
+            width: 56px; 
             height: 56px;
-            border-radius: 50%; /* Perfect circle */
+            border-radius: 50%; 
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
-            /* Flex properties for centering icon */
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem; /* Larger icon */
+            font-size: 1.8rem; 
         }
         .floating-button:hover {
-            background-color: #128C7E; /* Darker WhatsApp Green */
+            background-color: #128C7E; 
         }
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -731,6 +771,105 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
         }
         
+        /* --- Scroll Animation Classes --- */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* ========================================
+        --- NEW: Floating Mobile Preview Styles ---
+        ========================================
+        */
+        .floating-mobile-preview {
+            position: fixed;
+            right: -200px; /* Animation ke liye screen se bahar start */
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 99;
+            cursor: pointer;
+            transition: all 0.5s ease-out;
+            /* Page load ke 1.5s baad andar aayega */
+            animation: fadeInRight 0.8s ease-out 1.5s forwards; 
+        }
+
+        .floating-mobile-preview .mobile-frame {
+            width: 130px;
+            height: 260px;
+            background: #111;
+            border: 5px solid #333;
+            border-radius: 20px;
+            padding: 15px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Stylish hover animation */
+        .floating-mobile-preview:hover .mobile-frame {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .floating-mobile-preview .mobile-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Yahan cloned SVG fit hoga */
+        #floating-qr-target svg {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain;
+        }
+
+        /* Phone ke stylish details */
+        .floating-mobile-preview .mobile-top-notch {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 5px;
+            background: #333;
+            border-radius: 0 0 5px 5px;
+        }
+        .floating-mobile-preview .mobile-bottom-bar {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: #555;
+            border-radius: 5px;
+        }
+
+        .floating-preview-text {
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+            background: rgba(255,255,255,0.8);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+        
     </style>
 </head>
 <body class="font-sans bg-gray-50">
@@ -738,6 +877,17 @@
     <a href="https://wa.me/919864551558" target="_blank" class="floating-button" tabindex="-1">
         <i class="fab fa-whatsapp"></i> </a>
      
+    <div class="floating-mobile-preview" id="floatingPreview">
+        <div class="mobile-frame">
+            <div class="mobile-screen" id="floating-qr-target">
+                </div>
+            <div class="mobile-top-notch"></div>
+            <div class="mobile-bottom-bar"></div>
+        </div>
+        <div class="floating-preview-text">Live Preview</div>
+    </div>
+
+
     <nav class="navbar">
       <div class="nav-container">
         <a href="#" class="nav-brand">
@@ -749,7 +899,7 @@
           <li class="nav-item"><a href="#QR-code-type">Create Now</a></li>
           <li class="nav-item"><a href="#">About</a></li>
 		  <li class="nav-item"><a href="#">Contact Us</a></li>
-		  <li class="nav-item"><a href="cdu.html">Blogs</a></li>
+		  <li class="nav-item"><a href="#">Blogs</a></li>
         </ul>
 
         <div class="nav-toggler" id="navToggler">
@@ -769,7 +919,7 @@
 
 
     <div class="container" id="QR-code-type">
-        <div class="controls">
+        <div class="controls fade-in-on-scroll">
             <h2 style="text-align: left;">Make Dynamic QR Code</h2>
 
             <div class="control-card">
@@ -789,7 +939,7 @@
             <div class="control-card" id="forms-container"> <div id="forms-container-inner"> <div id="form-url" class="form-group active">
                         <h3>Enter Any URL</h3>
                         <label for="input-url">Your URL (e.g., https://futuretopindia.in)</label>
-                        <input type="url" id="input-url" placeholder="https://example.com">
+                        <input type="url" id="input-url" placeholder="https://example.com" value="https://example.com">
                     </div>
                     <div id="form-text" class="form-group">
                         <h3>Your Text</h3>
@@ -993,7 +1143,7 @@
             </div>
             </div>
 
-        <div class="preview">
+        <div class="preview fade-in-on-scroll">
             <h3>Live Preview Your QR Code</h3>
             
             <div id="frame-preview-none" class="frame-preview-wrapper active">
@@ -1050,7 +1200,8 @@
             </div>
         </div>
         </div>
-    <section class="features-layout">
+        
+    <section class="features-layout fade-in-on-scroll">
         <div class="features-container">
             <h2 class="section-title">Why Choose Our QR Generator?</h2>
             <div class="features-grid">
@@ -1072,6 +1223,9 @@
             </div>
         </div>
     </section>
+	
+	
+	
 
 
     <script>
@@ -1089,24 +1243,39 @@
                 const togglerIcon = navToggler.querySelector("i");
                 if (navMenu.classList.contains('active')) {
                     togglerIcon.classList.remove('fa-bars');
-                    togglerIcon.classList.add('fa-xmark'); // FIXED: Was fa-times
+                    togglerIcon.classList.add('fa-xmark'); 
                 } else {
-                    togglerIcon.classList.remove('fa-xmark'); // FIXED: Was fa-times
+                    togglerIcon.classList.remove('fa-xmark'); 
                     togglerIcon.classList.add('fa-bars');
                 }
             });
 
     
+            // --- Scroll-triggered Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, {
+                threshold: 0.1 
+            });
+    
+            document.querySelectorAll('.fade-in-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
 
-            // --- 1. Initialize QR Code Library (MODIFIED) ---
+
+            // --- 1. Initialize QR Code Library ---
             const qrCode = new QRCodeStyling({
                 width: 300,
                 height: 300,
-                type: "svg",
+                type: "svg", // SVG type rakha gaya hai cloning ke liye
                 data: "https://example.com",
                 image: "",
-                dotsOptions: { color: "#000000", type: "rounded" }, // Matches active button "rounded"
-                // FIXED: Initial state now matches the HTML's default selected <option>
+                dotsOptions: { color: "#000000", type: "rounded" }, 
                 cornersSquareOptions: { type: "extra-rounded" }, 
                 cornersDotOptions: { type: "dot" },
                 backgroundOptions: { color: "#FFFFFF" },
@@ -1117,8 +1286,8 @@
             qrCode.append(previewElement);
 
             
-            // --- 2. Select All Input Elements (No changes) ---
-            const formsContainer = document.getElementById("forms-container-inner"); // Updated selector
+            // --- 2. Select All Input Elements ---
+            const formsContainer = document.getElementById("forms-container-inner"); 
             const typeButtons = document.querySelectorAll(".type-btn"); 
             const inputUrl = document.getElementById("input-url");
             const inputText = document.getElementById("input-text");
@@ -1154,8 +1323,14 @@
             const downloadBtn = document.getElementById("download-btn");
             const downloadFormat = document.getElementById("download-format");
 
-            
-            // --- 3. Main Function to Update QR Code (No changes) ---
+            // --- NEW: Floating Preview Elements ---
+            const floatingPreview = document.getElementById("floatingPreview");
+            const floatingQrTarget = document.getElementById("floating-qr-target");
+            const mainQrPreview = document.getElementById("qr-code-preview");
+            const mainPreviewSection = document.querySelector(".preview");
+
+
+            // --- 3. Main Function to Update QR Code ---
             const updateQrCodeData = () => {
                 let newData = "";
                 const activeBtn = document.querySelector(".type-btn.active");
@@ -1185,7 +1360,7 @@
             
             // --- 4. Event Listeners ---
 
-            // QR Type Button Click Logic (No changes)
+            // (Baaki sabhi listeners pehle jaise hi hain)
             typeButtons.forEach(btn => {
                 btn.addEventListener("click", () => {
                     typeButtons.forEach(b => b.classList.remove("active"));
@@ -1199,7 +1374,6 @@
                 });
             });
 
-            // Standard Data Inputs (No changes)
             const allDataInputs = [
                 inputUrl, inputText, inputEmail, inputEmailSubject, inputEmailBody,
                 inputPhone, inputSmsPhone, inputSmsMessage, inputWifiSsid, inputWifiPass,
@@ -1207,7 +1381,6 @@
             ];
             allDataInputs.forEach(input => input.addEventListener("input", updateQrCodeData));
 
-            // Multi-URL Listeners (No changes)
             addMoreUrlBtn.addEventListener("click", () => {
                 if (multiUrlListContainer.querySelectorAll(".multi-url-entry").length < MAX_URLS) {
                     const newEntry = document.createElement("div");
@@ -1230,7 +1403,6 @@
             });
             multiUrlListContainer.addEventListener("input", updateQrCodeData);
 
-            // Styling Event Listeners (No changes)
             inputSize.addEventListener("input", () => {
                 const size = parseInt(inputSize.value, 10);
                 if (size > 0) {
@@ -1262,7 +1434,6 @@
                 inputLogo.value = "";
             });
 
-            // Visual Dot Style Click (No changes)
             dotsStyleSelector.addEventListener("click", (e) => {
                 const btn = e.target.closest(".style-btn");
                 if (!btn) return;
@@ -1274,7 +1445,6 @@
                 });
             });
 
-            // Corner Style Listeners (No changes)
             inputCornersStyle.addEventListener("input", () => {
                 qrCode.update({ cornersSquareOptions: { type: inputCornersStyle.value } });
             });
@@ -1282,7 +1452,6 @@
                 qrCode.update({ cornersDotOptions: { type: inputCornersDotStyle.value } });
             });
 
-            // Visual Frame Style Listeners (No changes)
             frameStyleSelector.addEventListener("click", (e) => {
                 const btn = e.target.closest(".style-btn");
                 if (!btn) return;
@@ -1311,35 +1480,29 @@
                 }
             });
             
-            // Frame Text Listener (MODIFIED - cleaned up redundant code)
             inputFrameText.addEventListener("input", () => {
                 const text = inputFrameText.value;
-                // Update only the *content* span inside all frame-text spans
                 document.querySelectorAll(".frame-text-content").forEach(span => {
                     span.textContent = text;
                 });
-                // Hide text element if input is empty
                 document.querySelectorAll(".frame-text").forEach(span => {
                      span.style.display = text ? "inline-flex" : "none";
                 });
-                // The 'scan-arrow' frame is already handled by the rule above.
             });
 
-            // Frame Color Listener (No changes)
             inputFrameColor.addEventListener("input", () => {
                 const color = inputFrameColor.value;
                 root.style.setProperty('--frame-color', color);
                 document.querySelector("#frame-preview-watch .frame-text").style.backgroundColor = color;
             });
             
-            // Frame Text Color Listener (No changes)
             inputFrameTextColor.addEventListener("input", () => {
                 const color = inputFrameTextColor.value;
                 root.style.setProperty('--frame-text-color', color);
                 document.querySelector("#frame-preview-watch .frame-text").style.color = color;
             });
 
-            // --- 5. Download Function (No changes) ---
+            // --- 5. Download Function ---
             downloadBtn.addEventListener("click", () => {
                 const format = downloadFormat.value;
                 
@@ -1363,7 +1526,7 @@
             });
 
 
-            // --- 6. Initial Setup Function (No changes) ---
+            // --- 6. Initial Setup Function ---
             function generateMiniPreviews() {
                 const buttons = dotsStyleSelector.querySelectorAll(".style-btn");
                 buttons.forEach(btn => {
@@ -1383,14 +1546,64 @@
                 });
             }
 
+
+            // ===========================================
+            // --- NEW: Floating Preview Logic ---
+            // ===========================================
+
+            // 1. Floating preview par click karne ka logic
+            floatingPreview.addEventListener("click", () => {
+                // Main preview panel tak smoothly scroll karo
+                mainPreviewSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center' // Panel ko screen ke center me laao
+                });
+
+                // Main preview par ek "pulse" highlight animation add karo
+                mainPreviewSection.style.transition = 'all 0.1s ease-in-out';
+                mainPreviewSection.style.transform = 'scale(1.02)';
+                mainPreviewSection.style.boxShadow = '0 0 30px rgba(0, 123, 255, 0.5)';
+                
+                // Thodi der baad animation reset karo
+                setTimeout(() => {
+                    mainPreviewSection.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out';
+                    mainPreviewSection.style.transform = '';
+                    mainPreviewSection.style.boxShadow = '';
+                }, 400);
+            });
+
+            // 2. Dono QR code ko sync karne ka logic
+            const syncQrPreviews = () => {
+                // Main QR code ke andar se SVG ko dhoondo
+                const mainSvg = mainQrPreview.querySelector('svg');
+                if (mainSvg) {
+                    // SVG code ko copy karke floating preview me daal do
+                    floatingQrTarget.innerHTML = mainSvg.outerHTML;
+                }
+            };
+
+            // 3. MutationObserver: Yeh dekhega ki main QR code kab badal raha hai
+            const qrObserver = new MutationObserver((mutationsList) => {
+                for(let mutation of mutationsList) {
+                    // Jab bhi main QR code (SVG) update ho...
+                    if (mutation.type === 'childList') {
+                        // Floating preview ko bhi update kar do
+                        syncQrPreviews();
+                    }
+                }
+            });
+
+            // Observer ko chalu karo (mainQrPreview element par nazar rakho)
+            qrObserver.observe(mainQrPreview, { childList: true });
+
+
             // --- Run on page load ---
             generateMiniPreviews();
-            updateQrCodeData();
+            updateQrCodeData(); // Isse pehla QR code banega
+            // (Observer apne aap pehle render ko pakad lega)
             root.style.setProperty('--frame-color', inputFrameColor.value);
             root.style.setProperty('--frame-text-color', inputFrameTextColor.value);
         });
     </script>
 </body>
 </html>
-
-
