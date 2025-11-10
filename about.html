@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Make Dynamic QR Code</title>
+  <meta name="description" content="Make Dynamic QR Code is India’s best free online QR code generator — create, customize, and manage dynamic QR codes forever free.">
+  <meta name="keywords" content="free dynamic qr code generator, qr code maker, qr code with logo, editable qr code free, make dynamic qr code">
+  <meta name="author" content="Make Dynamic QR Code">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://unpkg.com/scrollreveal"></script>
+  
+  
+  
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff, #e0f7ff);
+      color: #1f2937;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+
+
+         /* --- 🎨 FIXED: Puraana Navigation CSS Hata Diya Gaya Hai --- */
+        /* (Tailwind ab navigation ko handle kar raha hai) */
+
+
+        /* --- Naye Desktop Nav Link ke liye Animation --- */
+        .desktop-nav-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 8px;
+            color: inherit; 
+            transition: color 0.3s ease;
+        }
+        .desktop-nav-link:hover {
+            color: #00b3ff; /* Hover par blue color */
+        }
+        .desktop-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--frame-color, #007bff); 
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+        .desktop-nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* --- Naye Mobile Menu ke liye Animation --- */
+        #menu-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        #mobile-menu-panel {
+            width: 16rem; /* Tailwind 'w-64' */
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        #mobile-menu-panel h2 {
+             color: #ffffff; 
+             font-size: 1.25rem;
+             font-weight: 700; 
+        }
+        #mobile-menu-panel #close-menu-btn { color: #e0e0e0; }
+        #mobile-menu-panel #close-menu-btn:hover { color: #ffffff; }
+        #mobile-menu-panel #close-menu-btn .fa-times { font-size: 1.5rem; }
+        #mobile-menu-panel nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        #mobile-menu-panel nav a {
+            display: block;
+            padding: 0.5rem 0.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+        }
+         #mobile-menu-panel nav a:last-child { border-bottom: none; }
+         #mobile-menu-panel nav a:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+
+        /* JavaScript se add hone waali 'menu-active' class */
+        body.menu-active #menu-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+        body.menu-active #mobile-menu-panel {
+            transform: translateX(0);
+        }
+        body.menu-active #mobile-menu-panel nav a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        body.menu-active #mobile-menu-panel nav a:nth-child(1) { transition-delay: 0.15s; }
+        body.menu-active #mobile-menu-panel nav a:nth-child(2) { transition-delay: 0.20s; }
+        body.menu-active #mobile-menu-panel nav a:nth-child(3) { transition-delay: 0.25s; }
+        body.menu-active #mobile-menu-panel nav a:nth-child(4) { transition-delay: 0.30s; }
+        body.menu-active #mobile-menu-panel nav a:nth-child(5) { transition-delay: 0.35s; }
+
+ 
+      
+
+
+    /* Floating glowing background elements */
+    .floating {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      animation: float 8s infinite alternate;
+      z-index: -1;
+    }
+
+    .float1 {
+      width: 250px; height: 250px;
+      top: 10%; left: 10%;
+      background: #3b82f6;
+      animation-delay: 0s;
+    }
+    .float2 {
+      width: 200px; height: 200px;
+      bottom: 10%; right: 15%;
+      background: #06b6d4;
+      animation-delay: 3s;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-40px); }
+    }
+
+    header {
+      position: relative;
+      text-align: center;
+      padding: 100px 20px;
+      background: linear-gradient(120deg, #007bff, #00c4ff, #0081ff);
+      background-size: 300% 300%;
+      animation: gradient 8s ease infinite;
+      color: white;
+      overflow: hidden;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 15px;
+      color: #e0f2fe;
+    }
+
+    .section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transition: all .4s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .highlight {
+      color: #007bff;
+      font-weight: 700;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature {
+      background: linear-gradient(180deg, #ffffff, #f1f9ff);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: transform .3s ease, box-shadow .3s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    }
+
+    .feature:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: #007bff;
+      margin-bottom: 15px;
+    }
+
+    .cta-section {
+      background: linear-gradient(120deg, #007bff, #00c4ff);
+      color: white;
+      padding: 80px 20px;
+      border-radius: 30px;
+      margin-top: 80px;
+      text-align: center;
+      animation: fadein 2s ease-in;
+    }
+
+    .cta-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .cta-btn {
+      background: white;
+      color: #007bff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 20px;
+      transition: all .3s ease;
+    }
+
+    .cta-btn:hover {
+      background: #e0f2ff;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadein {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    
+  </style>
+</head>
+
+<body>
+
+  <div class="floating float1"></div>
+  <div class="floating float2"></div>
+  
+  
+  <nav id="main-nav" class="bg-white shadow-md fixed w-full z-30">
+        <div class="container mx-auto px-5 py-3">
+            <div class="flex items-center justify-between">
+                <a href="#">
+                    <div class="flex items-center">
+                        <img src="images/makedynamicqrcode.png" alt="Make Dynamic QR Code logo" class="h-12 mr-10" loading="lazy"> 
+                    </div>
+                </a>
+                
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="desktop-nav-link text-gray-700">Home</a>
+                    <a href="#QR-code-type" class="desktop-nav-link text-gray-700">Create Now</a>
+                    <a href="#" class="desktop-nav-link text-gray-700">About Us</a>
+                    <a href="#" class="desktop-nav-link text-gray-700">Blogs</a>
+                    <a href="#" class="desktop-nav-link text-gray-700">Helps</a>					
+                </div>
+
+                <div class="mobile-menu-button lg:hidden">
+                    <button id="menu-btn" aria-label="Open menu" class="text-gray-700 text-2xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-menu-container">
+        <div id="menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+        <div id="mobile-menu-panel" class="fixed top-0 left-0 h-full p-4 z-50">
+            <div class="flex justify-between items-center mb-6">
+                <h2>Menu</h2>
+                <button id="close-menu-btn" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav>
+                <a href="#" class="desktop-nav-link">Home</a>
+                <a href="#QR-code-type" class="desktop-nav-link">Create Now</a>
+                <a href="#" class="desktop-nav-link">About Us</a>
+                <a href="#" class="desktop-nav-link">Blogs</a>
+                <a href="#" class="desktop-nav-link">Helps</a>					
+            </nav>
+        </div> 
+    </div>
+	
+
+  <header style="background: none; color: #1f2937; padding: 100px 20px; text-align: center;">
+  <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 pt-20">
+    About <span class="text-blue-600">Make Dynamic QR Code</span>
+  </h1>
+  <p class="mt-4 text-lg text-gray-600">Your trusted platform to create unlimited customizable QR codes — totally free, forever!</p>
+</header>
+
+
+  <section class="section">
+    <div class="card" id="who">
+      <h2 class="text-3xl font-bold mb-4">Who We Are</h2>
+      <p class="text-lg leading-relaxed">At <span class="highlight">Make Dynamic QR Code</span>, we believe every digital connection should be <b>fast, simple, and 100% free</b>. Our platform lets anyone — from individuals to startups — create <b>dynamic, editable QR codes</b> for links, WiFi, business cards, and products without paying a single rupee.</p>
+    </div>
+
+    <div class="card" id="mission">
+      <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
+      <p class="text-lg leading-relaxed">We aim to make technology accessible to everyone by offering a <b>powerful yet easy-to-use tool</b> that lets users generate and customize QR codes with creativity, accuracy, and total freedom.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3 class="font-bold text-lg mb-2">Completely Free</h3>
+        <p>No subscriptions. No limits. Create and download as many QR codes as you want.</p>
+      </div>
+
+      <div class="feature">
+        <i class="fa-solid fa-rocket"></i>
+        <h3 class="font-bold text-lg mb-2">Fast & Reliable</h3>
+        <p>Instant QR generation with smooth UI — optimized for all devices.</p>
+      </div>
+
+      <div class="feature">
+        <i class="fa-solid fa-user-shield"></i>
+        <h3 class="font-bold text-lg mb-2">Privacy First</h3>
+        <p>Your data stays yours. We don’t track, sell, or store any personal info.</p>
+      </div>
+
+      <div class="feature">
+        <i class="fa-solid fa-pen-nib"></i>
+        <h3 class="font-bold text-lg mb-2">Customizable Design</h3>
+        <p>Adjust shapes, frames, colors, and styles — make your QR truly yours.</p>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <h2>Start Creating QR Codes — 100% Free, No Login Needed</h2>
+      <a href="index.html" class="cta-btn">Create Now</a>
+    </div>
+  </section>
+
+  
+
+    <footer class="bg-gray-900 text-white py-8 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    
+					<div class="flex items-center mb-4">
+                       <a href="#">            
+                          <img src="images/sublogo.png" alt="Make dynamic QR Code logo" class="h-10 mr-3">
+                       </a>
+                       
+                    </div>
+                   
+				   <i>	             
+                     <p class="text-gray-400">Create, Customize & Download Dynamic QR Codes Instantly.</p>         
+                   </i>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="https://www.facebook.com/share/198qDFavKp/" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="https://x.com/futuretopindia?t=4NUCIRuch4mBFslfDozGeQ&s=09" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/future_top_india?igsh=eHIwOHJhNW9nZGNh" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/futuretopindia?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+	           <br>
+<div class="border-t border-gray-700 mt-8 pt-2 text-white-500">
+    <span class="font-bold text-xl">Quick Links:</span>	
+    <div class="container mx-auto space-y-2 mt-4 mb-3">
+    <a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Home</a>
+    <a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">About</a>
+	<a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Helps</a>
+	<a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Blogs</a>
+	</div>
+	
+	
+<div class="border-t border-gray-700 mt-8 pt-2 text-white-500">
+	<span class="font-bold text-xl">Important Links:</span>
+	<div class="container mx-auto space-y-2 mt-4 ">
+    <a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Privacy Policy</a>
+	<a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Terms and Conditions</a>
+     
+	  </div>
+  
+  
+  
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-1x0 text-gray-400">
+                <p>©2025 by 
+				<a href="#"  class="text-blue-500 hover:underline">
+				Make Dynamic QR Code
+				</a>
+				| All Rights Reserved. <br> developer by <a href="http://futuretopindia.in/"  class="text-blue-500 hover:underline">
+				Future Top India 
+				</a></p>
+				
+            </div>
+        </div>
+    </footer>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // --- Naya Mobile Menu Logic ---
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        function toggleMenu() {
+            // 'menu-active' class ko body par add/remove karta hai
+            document.body.classList.toggle('menu-active');
+        }
+
+        // Buttons par click listener add kiya
+        if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+        if (closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMenu);
+        if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);  
+        
+    
+        // --- FIXED: Yahan par ek non-functional 'observer' code tha ---
+        // --- (Maine use hata diya hai kyonki woh 'about.html' par istemal nahi ho raha tha) ---
+
+    }); // DOMContentLoaded yahan band hota hai
+
+    // Yeh ScrollReveal code sahi hai aur 'DOMContentLoaded' ke bahar reh sakta hai
+    ScrollReveal().reveal('.card', { delay: 200, duration: 800, origin: 'bottom', distance: '40px', easing: 'ease-in-out', interval: 200 });
+    ScrollReveal().reveal('.feature', { delay: 200, duration: 800, origin: 'bottom', distance: '40px', easing: 'ease', interval: 150 });
+  </script>
+
+</body>
+</html>
