@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://makedynamicqrcode.in/</loc>
+    <loc>https://makedynamicqrcode.online/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://makedynamicqrcode.in/about.html</loc>
+    <loc>https://makedynamicqrcode.online/about</loc>
   </url>
   <url>
-    <loc>https://makedynamicqrcode.in/blogs.html</loc>
+    <loc>https://makedynamicqrcode.online/blogs</loc>
   </url>
   <url>
-    <loc>https://makedynamicqrcode.in/privacy-policy.html</loc>
+    <loc>https://makedynamicqrcode.online/privacy-policy</loc>
   </url>
   <url>
-    <loc>https://makedynamicqrcode.in/terms.html</loc>
+    <loc>https://makedynamicqrcode.online/termsandconditions</loc>
+  </url>
+    <url>
+    <loc>https://makedynamicqrcode.online/helps</loc>
   </url>
 </urlset>
