@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Center | Make Dynamic QR Code</title>
+  <meta name="description" content="Get help and find answers to your questions about creating free dynamic QR codes. Learn how to add logos, use frames, and download your QR.">
+  <meta name="keywords" content="qr code help, faq, qr code support, how to make qr code, make dynamic qr code">
+  <meta name="author" content="Make Dynamic QR Code">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <script src="https://unpkg.com/scrollreveal"></script>
+  
+  <style>
+    /* --- Root CSS Variables (for consistency) --- */
+    :root {
+        --frame-color: #007bff;
+        --frame-text-color: #FFFFFF;
+        --page-bg-color: #f4f7f6;
+    }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--page-bg-color);
+      color: #1f2937;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    /* --- Navigation Styles (Copied from your files) --- */
+    .desktop-nav-link {
+        position: relative;
+        text-decoration: none;
+        padding-bottom: 8px;
+        color: inherit; 
+        transition: color 0.3s ease;
+    }
+    .desktop-nav-link:hover {
+        color: #00b3ff;
+    }
+    .desktop-nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--frame-color, #007bff); 
+        transform: scaleX(0);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+    }
+    .desktop-nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+    /* --- Mobile Menu Styles (Copied from your files) --- */
+    #menu-overlay {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    #mobile-menu-panel {
+        width: 16rem; /* w-64 */
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        color: #ffffff;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    #mobile-menu-panel h2 {
+         color: #ffffff; 
+         font-size: 1.25rem;
+         font-weight: 700; 
+    }
+    #mobile-menu-panel #close-menu-btn { color: #e0e0e0; }
+    #mobile-menu-panel #close-menu-btn:hover { color: #ffffff; }
+    #mobile-menu-panel #close-menu-btn .fa-times { font-size: 1.5rem; }
+    #mobile-menu-panel nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    #mobile-menu-panel nav a {
+        display: block;
+        padding: 0.5rem 0.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+    }
+     #mobile-menu-panel nav a:last-child { border-bottom: none; }
+     #mobile-menu-panel nav a:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+    /* --- Mobile Menu Active States (Copied from your files) --- */
+    body.menu-active #menu-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+    body.menu-active #mobile-menu-panel {
+        transform: translateX(0);
+    }
+    body.menu-active #mobile-menu-panel nav a {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    body.menu-active #mobile-menu-panel nav a:nth-child(1) { transition-delay: 0.15s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(2) { transition-delay: 0.20s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(3) { transition-delay: 0.25s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(4) { transition-delay: 0.30s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(5) { transition-delay: 0.35s; }
+
+    /* --- NEW: FAQ Accordion Styles --- */
+    .faq-question {
+      transition: background-color 0.3s ease;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.3s ease;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 500px; /* Set to a large enough value */
+      padding-top: 1rem;
+      padding-bottom: 1.25rem;
+    }
+    .faq-question i {
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+    }
+
+    /* --- NEW: How-to Feature Card Styles (from about.html) --- */
+    .feature {
+      background: linear-gradient(180deg, #ffffff, #f1f9ff);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: transform .3s ease, box-shadow .3s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    }
+    .feature:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .feature i {
+      font-size: 2.5rem;
+      color: #007bff;
+      margin-bottom: 15px;
+    }
+
+    /* --- NEW: CTA Section Styles (from about.html) --- */
+    .cta-section {
+      background: linear-gradient(120deg, #007bff, #00c4ff);
+      color: white;
+      padding: 80px 20px;
+      border-radius: 30px;
+      text-align: center;
+    }
+    .cta-btn {
+      background: white;
+      color: #007bff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 20px;
+      transition: all .3s ease;
+    }
+    .cta-btn:hover {
+      background: #e0f2ff;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  
+  <nav id="main-nav" class="bg-white shadow-md fixed w-full z-30">
+        <div class="container mx-auto px-5 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html">
+                    <div class="flex items-center">
+                        <img src="images/makedynamicqrcode.png" alt="Make Dynamic QR Code logo" class="h-12 mr-10" loading="lazy"> 
+                    </div>
+                </a>
+                
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="desktop-nav-link text-gray-700">Home</a>
+                    <a href="index.html#QR-code-type" class="desktop-nav-link text-gray-700">Create Now</a>
+                    <a href="about.html" class="desktop-nav-link text-gray-700">About Us</a>
+                    <a href="#" class="desktop-nav-link text-gray-700">Blogs</a>
+                    <a href="helps.html" class="desktop-nav-link text-gray-700">Helps</a>					
+                </div>
+
+                <div class="mobile-menu-button lg:hidden">
+                    <button id="menu-btn" aria-label="Open menu" class="text-gray-700 text-2xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-menu-container">
+        <div id="menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+        <div id="mobile-menu-panel" class="fixed top-0 left-0 h-full p-4 z-50">
+            <div class="flex justify-between items-center mb-6">
+                <h2>Menu</h2>
+                <button id="close-menu-btn" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav>
+                <a href="index.html" class="desktop-nav-link">Home</a>
+                <a href="index.html#QR-code-type" class="desktop-nav-link">Create Now</a>
+                <a href="about.html" class="desktop-nav-link">About Us</a>
+                <a href="#" class="desktop-nav-link">Blogs</a>
+                <a href="helps.html" class="desktop-nav-link">Helps</a>					
+            </nav>
+        </div> 
+    </div>
+	
+  <header style="background: linear-gradient(135deg, #f0f9ff, #e0f7ff); color: #1f2937; padding: 100px 20px; text-align: center;">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 pt-20" id="main-hero">
+      How can we <span class="text-blue-600">help you?</span>
+    </h1>
+    <p class="mt-4 text-lg text-gray-600">Find answers, guides, and support for our QR code generator.</p>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-5" aria-label="Help content">
+
+    <section class="max-w-3xl mx-auto my-12" id="search-section">
+      <div class="relative">
+        <input type="search" id="faq-search" placeholder="Search for a question (e.g., 'logo' or 'frame')" 
+               class="w-full p-4 pr-12 text-lg border-2 border-gray-200 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300">
+        <i class="fas fa-search absolute top-1/2 right-5 transform -translate-y-1/2 text-gray-400"></i>
+      </div>
+    </section>
+
+    <section class="max-w-3xl mx-auto my-12" id="faq-section">
+      <h2 class="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+
+      <div id="faq-container" class="space-y-4">
+        
+        <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center text-left p-5 hover:bg-gray-50">
+            <span class="text-lg font-semibold text-gray-800">Is this QR code generator really free?</span>
+            <i class="fas fa-chevron-down text-blue-500"></i>
+          </button>
+          <div class="faq-answer text-gray-600 leading-relaxed">
+            <p>Yes, 100%! Our tool is completely free to use. You can create, customize, and download unlimited QR codes with all features (logos, colors, frames) without any cost or registration.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center text-left p-5 hover:bg-gray-50">
+            <span class="text-lg font-semibold text-gray-800">How do I add my logo to the QR code?</span>
+            <i class="fas fa-chevron-down text-blue-500"></i>
+          </button>
+          <div class="faq-answer text-gray-600 leading-relaxed">
+            <p>It's easy! In the "Shape & Color" card, look for the "Add Logo" section. Click the "Choose File" button to upload your logo from your device. You can also easily remove it by clicking the "Remove Logo" button.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center text-left p-5 hover:bg-gray-50">
+            <span class="text-lg font-semibold text-gray-800">What download formats do you support?</span>
+            <i class="fas fa-chevron-down text-blue-500"></i>
+          </button>
+          <div class="faq-answer text-gray-600 leading-relaxed">
+            <p>You can download your final QR code in multiple high-quality formats:</p>
+            <ul class="list-disc list-inside mt-2 space-y-1">
+              <li><strong>PNG:</strong> Best for web use, presentations, and digital sharing.</li>
+              <li><strong>JPEG:</strong> A good alternative to PNG for digital use.</li>
+              <li><strong>WEBP:</strong> A modern format with great quality and small file sizes.</li>
+              <li><strong>SVG:</strong> A vector format that can be scaled to any size (e.g., for large banners or print) without losing quality. Note: SVG download does not include the frame.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center text-left p-5 hover:bg-gray-50">
+            <span class="text-lg font-semibold text-gray-800">What does "Dynamic QR Code" mean?</span>
+            <i class="fas fa-chevron-down text-blue-500"></i>
+          </button>
+          <div class="faq-answer text-gray-600 leading-relaxed">
+            <p>A dynamic QR code allows you to change the destination URL or content *after* the QR code has been printed. Our "Multi-URL" feature is a type of dynamic QR code. In contrast, most of our other types (like a standard URL) are "static," meaning the content is fixed once the code is generated.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center text-left p-5 hover:bg-gray-50">
+            <span class="text-lg font-semibold text-gray-800">How do the "Frames" work?</span>
+            <i class="fas fa-chevron-down text-blue-500"></i>
+          </button>
+          <div class="faq-answer text-gray-600 leading-relaxed">
+            <p>Frames add a stylish border and a "call to action" (like "SCAN ME") around your QR code. Simply go to the "Frame" card, select a style you like (e.g., Circle, Ribbon, Envelope), and type your desired text. You can even customize the frame and text colors! When you download as PNG/JPEG, the frame is included.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="my-20" id="how-to-section">
+      <h2 class="text-3xl font-bold text-center mb-10">How It Works (4 Easy Steps)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <div class="feature">
+          <i class="fa-solid fa-list-ul"></i>
+          <h3 class="font-bold text-lg mb-2">1. Choose Type</h3>
+          <p class="text-gray-600">Select your QR code type, such as URL, WiFi, Contact Card, Text, or Email.</p>
+        </div>
+
+        <div class="feature">
+          <i class="fa-solid fa-keyboard"></i>
+          <h3 class="font-bold text-lg mb-2">2. Add Content</h3>
+          <p class="text-gray-600">Enter your information into the fields. The live preview will update instantly.</p>
+        </div>
+        
+        <div class="feature">
+          <i class="fa-solid fa-palette"></i>
+          <h3 class="font-bold text-lg mb-2">3. Customize Design</h3>
+          <p class="text-gray-600">Change dot shapes, add your logo, pick colors, and select a "Scan Me" frame.</p>
+        </div>
+
+        <div class="feature">
+          <i class="fa-solid fa-cloud-arrow-down"></i>
+          <h3 class="font-bold text-lg mb-2">4. Download</h3>
+          <p class="text-gray-600">Choose your format (PNG, SVG, etc.) and click the "Download" button. It's that simple!</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-20" id="contact-section">
+      <div class="cta-section rounded-2xl shadow-xl">
+        <h2 class="text-3xl font-bold">Still Need Help?</h2>
+        <p class="text-lg mt-3 mb-6 max-w-2xl mx-auto">If you can't find the answer you're looking for, please get in touch with our support team. We're happy to help!</p>
+        <a href="mailto:support@makedynamicqrcode.online" class="cta-btn text-lg">
+          <i class="fas fa-envelope mr-2"></i> Contact Support
+        </a>
+      </div>
+    </section>
+
+  </main>
+  <footer class="bg-gray-900 text-white py-8 px-4">
+      <div class="container mx-auto">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+              <div class="mb-6 md:mb-0">
+                  
+                  <div class="flex items-center mb-4">
+                     <a href="index.html">            
+                        <img src="images/sublogo.png" alt="Make dynamic QR Code logo" class="h-10 mr-3">
+                     </a>
+                     
+                  </div>
+                 
+                 <i>	             
+                   <p class="text-gray-400">Create, Customize & Download Dynamic QR Codes Instantly.</p>         
+                 </i>
+              </div>
+
+              <div class="flex space-x-6">
+                  <a href="https://www.facebook.com/share/198qDFavKp/" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-facebook-f text-xl"></i>
+                  </a>
+                  <a href="https://x.com/futuretopindia?t=4NUCIRuch4mBFslfDozGeQ&s=09" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-twitter text-xl"></i>
+                  </a>
+                  <a href="https://www.instagram.com/future_top_india?igsh=eHIwOHJhNW9nZGNh" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-instagram text-xl"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/in/futuretopindia?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-linkedin-in text-xl"></i>
+                  </a>
+              </div>
+          </div>
+
+             <br>
+<div class="border-t border-gray-700 mt-8 pt-2 text-white-500">
+  <span class="font-bold text-xl">Quick Links:</span>	
+  <div class="container mx-auto space-y-2 mt-4 mb-3">
+  <a href="index.html" class="text-blue-500 hover:underline hover:text-blue-300 block">Home</a>
+  <a href="about.html" class="text-blue-500 hover:underline hover:text-blue-300 block">About</a>
+  <a href="helps.html" class="text-blue-500 hover:underline hover:text-blue-300 block">Helps</a>
+  <a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Blogs</a>
+  </div>
+  
+  
+<div class="border-t border-gray-700 mt-8 pt-2 text-white-500">
+  <span class="font-bold text-xl">Important Links:</span>
+  <div class="container mx-auto space-y-2 mt-4 ">
+  <a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Privacy Policy</a>
+  <a href="#" class="text-blue-500 hover:underline hover:text-blue-3all block">Terms and Conditions</a>
+   
+    </div>
+
+
+          <div class="border-t border-gray-700 mt-8 pt-8 text-center text-1x0 text-gray-400">
+              <p>©2025 by 
+              <a href="#"  class="text-blue-500 hover:underline">
+              Make Dynamic QR Code
+              </a>
+              | All Rights Reserved. <br> developer by <a href="http://futuretopindia.in/"  class="text-blue-500 hover:underline">
+              Future Top India 
+              </a></p>
+              
+          </div>
+      </div>
+  </footer>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      
+      // --- Mobile Menu Logic (Copied from your files) ---
+      const menuBtn = document.getElementById('menu-btn');
+      const closeMenuBtn = document.getElementById('close-menu-btn');
+      const menuOverlay = document.getElementById('menu-overlay');
+
+      function toggleMenu() {
+          document.body.classList.toggle('menu-active');
+      }
+
+      if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+      if (closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMenu);
+      if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);  
+      
+      
+      // --- NEW: FAQ Accordion Logic ---
+      const faqItems = document.querySelectorAll('.faq-item');
+
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+          
+          // Check if this item is already active
+          const wasActive = item.classList.contains('active');
+          
+          // Optional: Close all other items
+          // faqItems.forEach(i => i.classList.remove('active'));
+          
+          // Toggle the current item
+          if (wasActive) {
+            item.classList.remove('active');
+          } else {
+            item.classList.add('active');
+          }
+        });
+      });
+
+
+      // --- NEW: Live Search Filter Logic ---
+      const searchInput = document.getElementById('faq-search');
+      
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const searchTerm = e.target.value.toLowerCase();
+          
+          faqItems.forEach(item => {
+            const itemText = item.textContent.toLowerCase();
+            if (itemText.includes(searchTerm)) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      }
+
+
+      // --- ScrollReveal Animations (from about.html) ---
+      ScrollReveal().reveal('#main-hero', { delay: 100, duration: 800, origin: 'top', distance: '30px', easing: 'ease-in-out' });
+      ScrollReveal().reveal('#search-section', { delay: 200, duration: 800, origin: 'bottom', distance: '30px', easing: 'ease-in-out' });
+      ScrollReveal().reveal('.faq-item', { delay: 200, duration: 600, origin: 'bottom', distance: '30px', easing: 'ease', interval: 100 });
+      ScrollReveal().reveal('#how-to-section h2', { delay: 150, duration: 800, origin: 'bottom', distance: '30px', easing: 'ease' });
+      ScrollReveal().reveal('.feature', { delay: 200, duration: 800, origin: 'bottom', distance: '40px', easing: 'ease', interval: 150 });
+      ScrollReveal().reveal('#contact-section', { delay: 250, duration: 1000, origin: 'bottom', distance: '40px', easing: 'ease-in-out' });
+
+  });
+</script>
+
+</body>
+</html>
