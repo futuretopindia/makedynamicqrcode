@@ -12,14 +12,12 @@
   <meta name="language" content="English">
   <meta name="theme-color" content="#007bff">
 
-  <!-- ✅ Open Graph (for Facebook, LinkedIn, WhatsApp) -->
   <meta property="og:title" content="Make Dynamic QR Code - Free Customizable QR Code Generator">
   <meta property="og:description" content="Create free editable QR codes with your own logo, frame and colors. Fast, secure, and mobile-friendly.">
   <meta property="og:image" content="https://makedynamicqrcode.online/images/makedynamicqrcode.png">
   <meta property="og:url" content="https://makedynamicqrcode.online/">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="Make Dynamic QR Code">
 
-  <!-- ✅ Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Make Dynamic QR Code - Free Customizable QR Code Generator">
   <meta name="twitter:description" content="Generate editable QR codes instantly — with logo, frames, and colors. 100% free and dynamic.">
@@ -28,68 +26,28 @@
   <link rel="canonical" href="https://makedynamicqrcode.online/">
   <link rel="icon" href="images/favicon.png" type="image/png">
 	
-	
-	
-	
-	
-	
 	<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Make Dynamic QR Code",
-  "url": "https://makedynamicqrcode.online/",
-  "logo": "https://makedynamicqrcode.online/images/makedynamicqrcode.png",
-  "description": "Free online QR code generator with advanced customization. Create, design, and download editable QR codes instantly for any purpose.",
-  "applicationCategory": "Utility",
-  "operatingSystem": "All",
-  "publisher": {
-    "@type": "Organization",
-    "name": "Make Dynamic QR Code",
-    "url": "https://makedynamicqrcode.online/"
-  }
-}
-</script>
-
-
-
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Make Dynamic QR Code",
+      "url": "https://makedynamicqrcode.online/",
+      "logo": "https://makedynamicqrcode.online/images/makedynamicqrcode.png",
+      "description": "Free online QR code generator with advanced customization. Create, design, and download editable QR codes instantly for any purpose.",
+      "applicationCategory": "Utility",
+      "operatingSystem": "All",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Make Dynamic QR Code",
+        "url": "https://makedynamicqrcode.online/"
+      }
+    }
+    </script>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/scrollreveal"></script>
 
     <style>
         /* --- Root CSS Variables (for colors) --- */
@@ -210,9 +168,7 @@
         body.menu-active #mobile-menu-panel nav a:nth-child(5) { transition-delay: 0.35s; }
 
  
-        /* --- 🎨 FIXED: Tailwind Conflict Fix --- */
-        /* Ye rule Tailwind ko aapke main container ko kharaab karne se rokta hai */
-        /* Isse aapko HTML mein `.container` ka naam nahi badalna padega */
+        
         .container[id="QR-code-type"] {
             display: flex !important;
             flex-wrap: wrap !important;
@@ -381,7 +337,7 @@
 	   
 	   
 
- #download-btn { background-color: #28a745; }
+        #download-btn { background-color: #28a745; }
         #download-btn:hover {
             background-color: #218838;
             box-shadow: 0 4px 10px rgba(33, 136, 56, 0.3);
@@ -701,32 +657,32 @@
       .why-card:hover::before{opacity:1}
       .why-card 
 	  .icon-wrap {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;    
-  justify-content: center;
-  margin: 0 auto 12px auto; /* center horizontally */
-  background: linear-gradient(135deg, var(--frame-color), #00b3ff);
-  color: #fff;
-  font-size: 1.4rem; /* thoda readable size */
-  box-shadow: 0 4px 12px rgba(0, 179, 255, 0.3); /* soft glow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+          width: 58px;
+          height: 58px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;    
+          justify-content: center;
+          margin: 0 auto 12px auto; /* center horizontally */
+          background: linear-gradient(135deg, var(--frame-color), #00b3ff);
+          color: #fff;
+          font-size: 1.4rem; /* Readable icon size */
+          box-shadow: 0 4px 12px rgba(0, 179, 255, 0.3); /* soft glow */
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
 
-/* Hover effect — thoda stylish look */
-.icon-wrap:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 179, 255, 0.5);
-}
+      /* Hover effect for a stylish look */
+      .icon-wrap:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(0, 179, 255, 0.5);
+      }
 
-/* Animation visible hone par smooth transition */
-.why-card.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.6s ease;
-}
+      /* Animation visible hone par smooth transition */
+      .why-card.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.6s ease;
+      }
 
       
       /* small utilities */
@@ -735,6 +691,31 @@
       .download-card button, .download-card select{width:100%}
     
     </style>
+	
+	<style>
+	
+    /* --- How-to Feature Card Styles --- */
+    .feature {
+      background: linear-gradient(180deg, #ffffff, #f1f9ff);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: transform .3s ease, box-shadow .3s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    }
+
+    .feature:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: #007bff;
+      margin-bottom: 15px;
+    }
+  
+  </Style>
   
 </head>
  
@@ -745,18 +726,18 @@
     <nav id="main-nav" class="bg-white shadow-md fixed w-full z-30">
         <div class="container mx-auto px-5 py-3">
             <div class="flex items-center justify-between">
-                <a href="https://makedynamicqrcode.online/">
+                <a href="index.html">
                     <div class="flex items-center">
                         <img src="images/makedynamicqrcode.png" alt="Make Dynamic QR Code logo" class="h-12 mr-10" loading="lazy"> 
                     </div>
                 </a>
                 
                 <div class="hidden lg:flex items-center space-x-8">
-                    <a href="https://makedynamicqrcode.online/" class="desktop-nav-link text-gray-700">Home</a>
+                    <a href="index.html" class="desktop-nav-link text-gray-700">Home</a>
                     <a href="#QR-code-type" class="desktop-nav-link text-gray-700">Create Now</a>
-                    <a href="https://makedynamicqrcode.online/about" class="desktop-nav-link text-gray-700">About Us</a>
+                    <a href="about.html" class="desktop-nav-link text-gray-700">About Us</a>
                     <a href="#" class="desktop-nav-link text-gray-700">Blogs</a>
-                    <a href="#" class="desktop-nav-link text-gray-700">Helps</a>					
+                    <a href="helps.html" class="desktop-nav-link text-gray-700">Helps</a>					
                 </div>
 
                 <div class="mobile-menu-button lg:hidden">
@@ -778,11 +759,11 @@
                 </button>
             </div>
             <nav>
-                <a href="https://makedynamicqrcode.online/" class="desktop-nav-link">Home</a>
+                <a href="index.html" class="desktop-nav-link">Home</a>
                 <a href="#QR-code-type" class="desktop-nav-link">Create Now</a>
-                <a href="https://makedynamicqrcode.online/about" class="desktop-nav-link">About Us</a>
+                <a href="about.html" class="desktop-nav-link">About Us</a>
                 <a href="#" class="desktop-nav-link">Blogs</a>
-                <a href="#" class="desktop-nav-link">Helps</a>					
+                <a href="helps.html" class="desktop-nav-link">Helps</a>					
             </nav>
         </div> 
     </div>
@@ -1121,6 +1102,37 @@
       </div>
     </div>
   </section>
+  
+  <section class="my-20" id="how-to-section">
+      <h2 class="text-3xl font-bold text-center mb-10">How It Works (4 Easy Steps)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <div class="feature">
+          <i class="fa-solid fa-list-ul"></i>
+          <h3 class="font-bold text-lg mb-2">1. Choose Type</h3>
+          <p class="text-gray-600">Select your QR code type, such as URL, WiFi, Contact Card, Text, or Email.</p>
+        </div>
+
+        <div class="feature">
+          <i class="fa-solid fa-keyboard"></i>
+          <h3 class="font-bold text-lg mb-2">2. Add Content</h3>
+          <p class="text-gray-600">Enter your information into the fields. The live preview will update instantly.</p>
+        </div>
+        
+        <div class="feature">
+          <i class="fa-solid fa-palette"></i>
+          <h3 class="font-bold text-lg mb-2">3. Customize Design</h3>
+          <p class="text-gray-600">Change dot shapes, add your logo, pick colors, and select a "Scan Me" frame.</p>
+        </div>
+
+        <div class="feature">
+          <i class="fa-solid fa-cloud-arrow-down"></i>
+          <h3 class="font-bold text-lg mb-2">4. Download</h3>
+          <p class="text-gray-600">Choose your format (PNG, SVG, etc.) and click the "Download" button. It's that simple!</p>
+        </div>
+
+      </div>
+    </section>
 
   <section id="experience-section" class="experience-section" aria-labelledby="exp-heading">
     <div class="exp-inner">
@@ -1151,8 +1163,8 @@
                 <div class="mb-6 md:mb-0">
                     
 					<div class="flex items-center mb-4">
-                       <a href="https://makedynamicqrcode.online/">            
-                          <img src="images/sublogo.png" alt="Make dynamic QR Code logo" class="h-10 mr-3">
+                       <a href="index.html">            
+                          <img src="images/sublogo.png" alt="Make Dynamic QR Code logo" class="h-10 mr-3">
                        </a>
                        
                     </div>
@@ -1163,16 +1175,16 @@
                 </div>
 
                 <div class="flex space-x-6">
-                    <a href="https://www.facebook.com/share/198qDFavKp/" class="text-gray-400 hover:text-white transition">
+                    <a href="https://www.facebook.com/share/198qDFavKp/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
                         <i class="fab fa-facebook-f text-xl"></i>
                     </a>
-                    <a href="https://x.com/futuretopindia?t=4NUCIRuch4mBFslfDozGeQ&s=09" class="text-gray-400 hover:text-white transition">
+                    <a href="https://x.com/futuretopindia?t=4NUCIRuch4mBFslfDozGeQ&s=09" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
                         <i class="fab fa-twitter text-xl"></i>
                     </a>
-                    <a href="https://www.instagram.com/future_top_india?igsh=eHIwOHJhNW9nZGNh" class="text-gray-400 hover:text-white transition">
+                    <a href="https://www.instagram.com/future_top_india?igsh=eHIwOHJhNW9nZGNh" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
                         <i class="fab fa-instagram text-xl"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/futuretopindia?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-white transition">
+                    <a href="https://www.linkedin.com/in/futuretopindia?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
                         <i class="fab fa-linkedin-in text-xl"></i>
                     </a>
                 </div>
@@ -1182,9 +1194,9 @@
 <div class="border-t border-gray-700 mt-8 pt-2 text-white-500">
     <span class="font-bold text-xl">Quick Links:</span>	
     <div class="container mx-auto space-y-2 mt-4 mb-3">
-    <a href="https://makedynamicqrcode.online/" class="text-blue-500 hover:underline hover:text-blue-300 block">Home</a>
-    <a href="https://makedynamicqrcode.online/about" class="text-blue-500 hover:underline hover:text-blue-300 block">About</a>
-	<a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Helps</a>
+    <a href="index.html" class="text-blue-500 hover:underline hover:text-blue-300 block">Home</a>
+    <a href="about.html" class="text-blue-500 hover:underline hover:text-blue-300 block">About</a>
+	<a href="helps.html" class="text-blue-500 hover:underline hover:text-blue-300 block">Helps</a>
 	<a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Blogs</a>
 	</div>
 	
@@ -1202,31 +1214,16 @@
 
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-1x0 text-gray-400">
                 <p>©2025 by 
-				<a href="https://makedynamicqrcode.online/" class="text-blue-500 hover:underline">
+				<a href="index.html" class="text-blue-500 hover:underline">
 				Make Dynamic QR Code
 				</a>
-				| All Rights Reserved. <br> developer by <a href="http://futuretopindia.in/"  class="text-blue-500 hover:underline">
+				| All Rights Reserved. <br> developer by <a href="http://futuretopindia.in/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
 				Future Top India 
 				</a></p>
 				
             </div>
         </div>
     </footer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
@@ -1411,6 +1408,7 @@
                     event.target.closest(".multi-url-entry").remove();
                     if (addMoreUrlBtn) addMoreUrlBtn.disabled = false;
                     if (multiUrlLimitMsg) multiUrlLimitMsg.style.display = "none";
+                    // --- FIXED: Update QR code after deleting a link ---
                     updateQrCodeData();
                 }
             });
@@ -1475,7 +1473,8 @@
 
         if (inputCornersStyle) {
             inputCornersStyle.addEventListener("input", () => {
-                qrCode.update({ cornersSquareOptions: { type: inputCornersStyle.val_ue } });
+                // --- FIXED: Changed .val_ue to .value ---
+                qrCode.update({ cornersSquareOptions: { type: inputCornersStyle.value } });
             });
         }
         if (inputCornersDotStyle) {
@@ -1638,17 +1637,15 @@
             });
         }
 
-        // --- Run on page load ---
+      ScrollReveal().reveal('#how-to-section h2', { delay: 150, duration: 800, origin: 'bottom', distance: '30px', easing: 'ease' });
+      ScrollReveal().reveal('.feature', { delay: 200, duration: 800, origin: 'bottom', distance: '40px', easing: 'ease', interval: 150 });
+	  
+        // --- FIXED: Run initial setup functions *inside* DOMContentLoaded ---
         generateMiniPreviews();
         updateQrCodeData();
         if (inputFrameColor) root.style.setProperty('--frame-color', inputFrameColor.value);
         if (inputFrameTextColor) root.style.setProperty('--frame-text-color', inputFrameTextColor.value);
 
-        const frameNone = document.getElementById('frame-preview-none');
-        if (frameNone && previewElement) {
-            frameNone.appendChild(previewElement);
-        }
-        
     }); /* DOMContentLoaded end */
 </script>
 
@@ -1677,7 +1674,7 @@
       }
     },
     {
-      "@type": "Question",
+      "@type_": "Question",
       "name": "What is a make dynamic QR code?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -1698,6 +1695,3 @@
  
   </body>
   </html>
-
-
-
