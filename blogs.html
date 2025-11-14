@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Make Dynamic QR Code</title>
+  <meta name="description" content="Explore articles, guides, and tips on QR code marketing, design, and security from Make Dynamic QR Code.">
+  <meta name="keywords" content="qr code blog, qr code marketing, qr code tips, dynamic qr code guide">
+  <meta name="author" content="Make Dynamic QR Code">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <script src="https://unpkg.com/scrollreveal"></script>
+  
+  <style>
+    /* --- Root CSS Variables (Copied from your files) --- */
+    :root {
+        --frame-color: #007bff;
+        --frame-text-color: #FFFFFF;
+        --page-bg-color: #f4f7f6;
+    }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--page-bg-color);
+      color: #1f2937;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    /* --- Navigation Styles (Copied from your files) --- */
+    .desktop-nav-link {
+        position: relative;
+        text-decoration: none;
+        padding-bottom: 8px;
+        color: inherit; 
+        transition: color 0.3s ease;
+    }
+    .desktop-nav-link:hover {
+        color: #00b3ff;
+    }
+    .desktop-nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--frame-color, #007bff); 
+        transform: scaleX(0);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+    }
+    .desktop-nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+    /* --- NEW: Active Nav Link Style --- */
+    .nav-active {
+        font-weight: 700;
+        color: var(--frame-color, #007bff) !important;
+    }
+    .nav-active::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+    /* --- Mobile Menu Styles (Copied from your files) --- */
+    #menu-overlay {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    #mobile-menu-panel {
+        width: 16rem; /* w-64 */
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        color: #ffffff;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    #mobile-menu-panel h2 {
+         color: #ffffff; 
+         font-size: 1.25rem;
+         font-weight: 700; 
+    }
+    #mobile-menu-panel #close-menu-btn { color: #e0e0e0; }
+    #mobile-menu-panel #close-menu-btn:hover { color: #ffffff; }
+    #mobile-menu-panel #close-menu-btn .fa-times { font-size: 1.5rem; }
+    #mobile-menu-panel nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    #mobile-menu-panel nav a {
+        display: block;
+        padding: 0.5rem 0.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+    }
+     #mobile-menu-panel nav a:last-child { border-bottom: none; }
+     #mobile-menu-panel nav a:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+    /* --- Mobile Menu Active States (Copied from your files) --- */
+    body.menu-active #menu-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+    body.menu-active #mobile-menu-panel {
+        transform: translateX(0);
+    }
+    body.menu-active #mobile-menu-panel nav a {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    body.menu-active #mobile-menu-panel nav a:nth-child(1) { transition-delay: 0.15s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(2) { transition-delay: 0.20s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(3) { transition-delay: 0.25s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(4) { transition-delay: 0.30s; }
+    body.menu-active #mobile-menu-panel nav a:nth-child(5) { transition-delay: 0.35s; }
+
+    /* --- NEW: Blog Page Styles --- */
+    
+    /* Search and Filter Bar */
+    .tag-btn {
+        background-color: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #374151;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px; /* pill shape */
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .tag-btn:hover {
+        background-color: #f9fafb;
+        border-color: #a5b4fc;
+    }
+    .tag-btn.active {
+        background-color: var(--frame-color);
+        color: white;
+        border-color: var(--frame-color);
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Blog Card Styles (Inspired by .feature from about.html) */
+    .blog-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        transition: transform .3s ease, box-shadow .3s ease;
+        overflow: hidden; /* To contain the image zoom */
+        display: flex;
+        flex-direction: column;
+    }
+    .blog-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .blog-card-image-wrapper {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+    }
+    .blog-card-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .blog-card:hover .blog-card-image-wrapper img {
+        transform: scale(1.1);
+    }
+    .blog-card-content {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Makes card content fill the space */
+    }
+    .blog-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+    .blog-card-tags span {
+        background-color: #e0f2ff;
+        color: #007bff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .blog-card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+        text-decoration: none;
+    }
+    .blog-card-title:hover {
+        color: var(--frame-color);
+    }
+    .blog-card-excerpt {
+        color: #4b5563;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        flex-grow: 1; /* Pushes footer to the bottom */
+    }
+    .blog-card-footer {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+
+    /* Featured Post Specifics */
+    #featured-post .blog-card {
+        /* On large screens, make it horizontal */
+        flex-direction: column;
+    }
+    @media (min-width: 1024px) {
+        #featured-post .blog-card {
+            flex-direction: row;
+        }
+        #featured-post .blog-card-image-wrapper {
+            width: 55%;
+            aspect-ratio: auto;
+            flex-shrink: 0;
+        }
+        #featured-post .blog-card-content {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+
+
+    /* --- CTA Section Styles (Copied from helps.html) --- */
+    .cta-section {
+      background: linear-gradient(120deg, #007bff, #00c4ff);
+      color: white;
+      padding: 80px 20px;
+      border-radius: 30px;
+      text-align: center;
+    }
+    .cta-btn {
+      background: white;
+      color: #007bff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 20px;
+      transition: all .3s ease;
+      text-decoration: none;
+    }
+    .cta-btn:hover {
+      background: #e0f2ff;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  
+  <nav id="main-nav" class="bg-white shadow-md fixed w-full z-30">
+        <div class="container mx-auto px-5 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html">
+                    <div class="flex items-center">
+                        <img src="images/makedynamicqrcode.png" alt="Make Dynamic QR Code logo" class="h-12 mr-10" loading="lazy"> 
+                    </div>
+                </a>
+                
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="desktop-nav-link text-gray-700">Home</a>
+                    <a href="index.html#QR-code-type" class="desktop-nav-link text-gray-700">Create Now</a>
+                    <a href="about.html" class="desktop-nav-link text-gray-700">About Us</a>
+                    <a href="blogs.html" class="desktop-nav-link text-gray-700 nav-active">Blogs</a>
+                    <a href="helps.html" class="desktop-nav-link text-gray-700">Helps</a>					
+                </div>
+
+                <div class="mobile-menu-button lg:hidden">
+                    <button id="menu-btn" aria-label="Open menu" class="text-gray-700 text-2xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-menu-container">
+        <div id="menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+        <div id="mobile-menu-panel" class="fixed top-0 left-0 h-full p-4 z-50">
+            <div class="flex justify-between items-center mb-6">
+                <h2>Menu</h2>
+                <button id="close-menu-btn" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav>
+                <a href="index.html" class="desktop-nav-link">Home</a>
+                <a href="index.html#QR-code-type" class="desktop-nav-link">Create Now</a>
+                <a href="about.html" class="desktop-nav-link">About Us</a>
+                <a href="blogs.html" class="desktop-nav-link nav-active">Blogs</a>
+                <a href="helps.html" class="desktop-nav-link">Helps</a>					
+            </nav>
+        </div> 
+    </div>
+	
+  <header style="background: linear-gradient(135deg, #f0f9ff, #e0f7ff); color: #1f2937; padding: 100px 20px; text-align: center;">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 pt-20" id="main-hero">
+      Our <span class="text-blue-600">Blog & Insights</span>
+    </h1>
+    <p class="mt-4 text-lg text-gray-600">Guides, tips, and news on everything QR code related.</p>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-5" aria-label="Blog content">
+
+    <section class="my-12" id="blog-search-filter">
+      <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="relative flex-grow">
+          <input type="search" id="blog-search" placeholder="Search for an article..." 
+                 class="w-full p-4 pr-12 text-lg border-2 border-gray-200 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300">
+          <i class="fas fa-search absolute top-1/2 right-5 transform -translate-y-1/2 text-gray-400"></i>
+        </div>
+      </div>
+      <div id="tag-filter-container" class="flex flex-wrap gap-3 justify-center">
+        <button class="tag-btn active" data-tag="all">All Posts</button>
+        <button class="tag-btn" data-tag="guide">Guides</button>
+        <button class="tag-btn" data-tag="marketing">Marketing</button>
+        <button class="tag-btn" data-tag="design">Design</button>
+        <button class="tag-btn" data-tag="security">Security</button>
+        <button class="tag-btn" data-tag="ideas">Ideas</button>
+      </div>
+    </section>
+
+    <section class="my-16" id="featured-post-section">
+      <h2 class="text-3xl font-bold text-center mb-8">Featured Post</h2>
+      <div id="featured-post">
+        <article class="blog-card" data-tags="guide,marketing,dynamic qr">
+          <div class="blog-card-image-wrapper">
+            <img src="images/dynamicguide.png" alt="Dynamic QR Code on a package">
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-tags">
+              <span>Guide</span>
+              <span>Marketing</span>
+            </div>
+            <a href="#" class="blog-card-title">The Ultimate Guide to Dynamic QR Codes: Why They're a Game-Changer</a>
+            <p class="blog-card-excerpt">
+              Dynamic QR codes are a revolution in marketing. Unlike static codes, they allow you to change the destination URL at any time, even after the code has been printed. Learn how this feature can save you money and provide powerful analytics.
+            </p>
+            <div class="blog-card-footer">
+              <span>By Mr Rakibur islam | Nov 11, 2025</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="my-16" id="all-posts-section">
+      <h2 class="text-3xl font-bold text-center mb-10">All Posts</h2>
+      <div id="all-posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <article class="blog-card" data-tags="business,marketing,ideas">
+          <div class="blog-card-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1478&q=80" alt="QR code on a coffee shop window">
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-tags">
+              <span>Business</span>
+              <span>Ideas</span>
+            </div>
+            <a href="#" class="blog-card-title">5 Creative Ways to Use QR Codes for Your Small Business</a>
+            <p class="blog-card-excerpt">
+              Move beyond just linking to your website. Discover how to use QR codes for WiFi access, collecting reviews, showing menus, or even running loyalty programs.
+            </p>
+            <div class="blog-card-footer">
+              <span>By Mr Rakibur islam | Nov 11, 2025</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="blog-card" data-tags="design,customization,tips">
+          <div class="blog-card-image-wrapper">
+            <img src="images/Colorful custom QR code.png" alt="Colorful custom QR code">
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-tags">
+              <span>Design</span>
+              <span>Tips</span>
+            </div>
+            <a href="#" class="blog-card-title">How to Design a Beautiful QR Code (That People Actually Scan)</a>
+            <p class="blog-card-excerpt">
+              A plain black and white QR code is boring. Learn the dos and don'ts of adding logos, changing colors, and using frames to create a QR code that matches your brand.
+            </p>
+            <div class="blog-card-footer">
+              <span>By Mr Rakibur islam | Nov 11, 2025</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="blog-card" data-tags="guide,static qr,dynamic qr">
+          <div class="blog-card-image-wrapper">
+            <img src="images/Two phones showing static vs dynamic.png" alt="Two phones showing static vs dynamic">
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-tags">
+              <span>Guide</span>
+              <span>Dynamic QR</span>
+            </div>
+            <a href="#" class="blog-card-title">Static vs. Dynamic QR Codes: Which One Do You Need?</a>
+            <p class="blog-card-excerpt">
+              The biggest choice you'll make when creating a QR code. We break down the pros and cons of each type so you can choose the right one for your project.
+            </p>
+            <div class="blog-card-footer">
+              <span>By Mr Rakibur islam | Nov 11, 2025</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="blog-card" data-tags="security,tips">
+          <div class="blog-card-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1563206767-5b18f218e8de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Person scanning a QR code with a warning icon">
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-tags">
+              <span>Security</span>
+              <span>Tips</span>
+            </div>
+            <a href="#" class="blog-card-title">QR Code Security: How to Spot and Avoid Malicious Codes</a>
+            <p class="blog-card-excerpt">
+              "Quishing" (QR code phishing) is on the rise. Learn 3 simple tips to protect yourself and your customers from malicious QR codes hidden in plain sight.
+            </inject>
+            <div class="blog-card-footer">
+              <span>By Mr Rakibur islam | Nov 12, 2025</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="blog-card" data-tags="future,technology,ideas">
+          <div class="blog-card-image-wrapper">
+            <img src="images/Futuristic augmented reality with QR codes.png" alt="Futuristic augmented reality with QR codes">
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-tags">
+              <span>Future</span>
+              <span>Ideas</span>
+            </div>
+            <a href="#" class="blog-card-title">The Future of QR Codes: Trends Beyond 2025</a>
+            <p class="blog-card-excerpt">
+              They're not just for links. Explore the future of QR codes in augmented reality (AR), inventory management, and secure personal identification.
+            </p>
+            <div class="blog-card-footer">
+              <span>By Mr Rakibur islam | Nov 12, 2025</span>
+            </div>
+          </div>
+        </article>
+
+        <p id="no-results-message" class="text-center text-gray-500 text-lg col-span-full" style="display: none;">
+          No posts found matching your criteria.
+        </p>
+
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-20" id="contact-section">
+      <div class="cta-section rounded-2xl shadow-xl">
+        <h2 class="text-3xl font-bold">Ready to Create Your Own?</h2>
+        <p class="text-lg mt-3 mb-6 max-w-2xl mx-auto">All the features you've read about—dynamic links, custom designs, and frames—are 100% free to use.</p>
+        <a href="index.html#QR-code-type" class="cta-btn text-lg">
+          <i class="fas fa-qrcode mr-2"></i> Create Your Free QR Code
+        </a>
+      </div>
+    </section>
+
+  </main>
+  
+  <footer class="bg-gray-900 text-white py-8 px-4">
+      <div class="container mx-auto">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+              <div class="mb-6 md:mb-0">
+                  
+                  <div class="flex items-center mb-4">
+                     <a href="index.html">            
+                        <img src="images/sublogo.png" alt="Make dynamic QR Code logo" class="h-10 mr-3">
+                     </a>
+                     
+                  </div>
+                 
+                 <i>	             
+                   <p class="text-gray-400">Create, Customize & Download Dynamic QR Codes Instantly.</p>         
+                 </i>
+              </div>
+
+              <div class="flex space-x-6">
+                  <a href="https://www.facebook.com/share/198qDFavKp/" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-facebook-f text-xl"></i>
+                  </a>
+                  <a href="https://x.com/futuretopindia?t=4NUCIRuch4mBFslfDozGeQ&s=09" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-twitter text-xl"></i>
+                  </a>
+                  <a href="https://www.instagram.com/future_top_india?igsh=eHIwOHJhNW9nZGNh" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-instagram text-xl"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/in/futuretopindia?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-white transition">
+                      <i class="fab fa-linkedin-in text-xl"></i>
+                  </a>
+              </div>
+          </div>
+
+             <br>
+<div class="border-t border-gray-700 mt-8 pt-2 text-white-500">
+  <span class="font-bold text-xl">Quick Links:</span>	
+  <div class="container mx-auto space-y-2 mt-4 mb-3">
+  <a href="index.html" class="text-blue-500 hover:underline hover:text-blue-300 block">Home</a>
+  <a href="about.html" class="text-blue-500 hover:underline hover:text-blue-300 block">About</a>
+  <a href="blogs.html" class="text-blue-500 hover:underline hover:text-blue-300 block">Blogs</a>
+  <a href="helps.html" class="text-blue-500 hover:underline hover:text-blue-300 block">Helps</a>
+  </div>
+  
+  
+<div class="border-t border-gray-700 mt-8 pt-2 text-white-500">
+  <span class="font-bold text-xl">Important Links:</span>
+  <div class="container mx-auto space-y-2 mt-4 ">
+  <a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Privacy Policy</a>
+  <a href="#" class="text-blue-500 hover:underline hover:text-blue-300 block">Terms and Conditions</a>
+   
+    </div>
+
+
+          <div class="border-t border-gray-700 mt-8 pt-8 text-center text-1x0 text-gray-400">
+              <p>©2025 by 
+              <a href="index.html"  class="text-blue-500 hover:underline">
+              Make Dynamic QR Code
+              </a>
+              | All Rights Reserved. <br> developer by <a href="http://futuretopindia.in/"  class="text-blue-500 hover:underline">
+              Future Top India 
+              </a></p>
+              
+          </div>
+      </div>
+  </footer>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      
+      // --- Mobile Menu Logic (Copied from your files) ---
+      const menuBtn = document.getElementById('menu-btn');
+      const closeMenuBtn = document.getElementById('close-menu-btn');
+      const menuOverlay = document.getElementById('menu-overlay');
+
+      function toggleMenu() {
+          document.body.classList.toggle('menu-active');
+      }
+
+      if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+      if (closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMenu);
+      if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);  
+      
+      
+      // --- NEW: Blog Filter Logic ---
+      const searchInput = document.getElementById('blog-search');
+      const tagContainer = document.getElementById('tag-filter-container');
+      const allTagButtons = tagContainer.querySelectorAll('.tag-btn');
+      const featuredPost = document.getElementById('featured-post').querySelector('.blog-card');
+      const allPosts = document.getElementById('all-posts-grid').querySelectorAll('.blog-card');
+      const allBlogCards = [featuredPost, ...allPosts]; // Combine all cards into one array
+      const noResultsMessage = document.getElementById('no-results-message');
+
+      function filterPosts() {
+          const searchTerm = searchInput.value.toLowerCase();
+          const activeTagBtn = tagContainer.querySelector('.tag-btn.active');
+          const activeTag = activeTagBtn ? activeTagBtn.dataset.tag : 'all';
+          
+          let resultsFound = false;
+
+          allBlogCards.forEach(card => {
+              const cardText = card.textContent.toLowerCase();
+              const cardTags = card.dataset.tags.toLowerCase();
+              
+              const matchesSearch = cardText.includes(searchTerm);
+              const matchesTag = (activeTag === 'all') || cardTags.includes(activeTag);
+              
+              if (matchesSearch && matchesTag) {
+                  card.style.display = 'flex'; // Use 'flex' to match .blog-card style
+                  resultsFound = true;
+              } else {
+                  card.style.display = 'none';
+              }
+          });
+          
+          // Show or hide the "No results" message
+          if (noResultsMessage) {
+            noResultsMessage.style.display = resultsFound ? 'none' : 'block';
+          }
+      }
+
+      // Listener for search input
+      if (searchInput) {
+        searchInput.addEventListener('input', filterPosts);
+      }
+      
+      // Listener for tag buttons
+      if (tagContainer) {
+        tagContainer.addEventListener('click', (e) => {
+            const clickedBtn = e.target.closest('.tag-btn');
+            if (!clickedBtn) return; // Ignore clicks that aren't on a button
+            
+            // Remove 'active' from all buttons
+            allTagButtons.forEach(btn => btn.classList.remove('active'));
+            // Add 'active' to the clicked button
+            clickedBtn.classList.add('active');
+            
+            filterPosts();
+        });
+      }
+
+
+      // --- ScrollReveal Animations ---
+      ScrollReveal().reveal('#main-hero', { delay: 100, duration: 800, origin: 'top', distance: '30px', easing: 'ease-in-out' });
+      ScrollReveal().reveal('#blog-search-filter', { delay: 200, duration: 800, origin: 'bottom', distance: '30px', easing: 'ease-in-out' });
+      ScrollReveal().reveal('#featured-post-section', { delay: 250, duration: 800, origin: 'bottom', distance: '30px', easing: 'ease' });
+      ScrollReveal().reveal('#all-posts-grid .blog-card', { delay: 200, duration: 600, origin: 'bottom', distance: '30px', easing: 'ease', interval: 100 });
+      ScrollReveal().reveal('#contact-section', { delay: 250, duration: 1000, origin: 'bottom', distance: '40px', easing: 'ease-in-out' });
+
+  });
+</script>
+
+</body>
+</html>
